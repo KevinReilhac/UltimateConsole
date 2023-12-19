@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Template name="DebugLine" src="project://database/Assets/Editor/UI/DebugLine.uxml?fileID=9197481963319205126&amp;guid=a694e4a1ac608a7408951b892595b349&amp;type=3#DebugLine" />
+    <Style src="project://database/Assets/Editor/UI/UltimateConsoleWindowStyle.uss?fileID=7433441132597879392&amp;guid=f4f2a36fb9c405c4cbea73b118b43fc6&amp;type=3#UltimateConsoleWindowStyle" />
+    <uie:Toolbar>
+        <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Clear" />
+        <uie:ToolbarSpacer />
+        <uie:MaskField choices="Warning, Error, Default" style="min-width: 200px;" />
+        <uie:ToolbarSpacer style="flex-grow: 1;" />
+        <uie:ToolbarSearchField focusable="true" />
+    </uie:Toolbar>
+    <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">
+        <ui:TwoPaneSplitView orientation="Horizontal" fixed-pane-initial-dimension="352" style="flex-direction: row; height: 100%;">
+            <ui:VisualElement name="DebugLines" style="flex-grow: 1;">
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="ScrollView" style="flex-grow: 1;">
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                    <ui:Instance template="DebugLine" name="DebugLine" />
+                </ui:ScrollView>
+            </ui:VisualElement>
+            <ui:TwoPaneSplitView name="Details" orientation="Vertical" style="flex-grow: 1;">
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" style="flex-grow: 1;">
+                    <ui:Label tabindex="-1" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus volutpat sed augue sed congue. Phasellus et mauris finibus, volutpat libero eget, tempus lorem. Sed sed magna scelerisque ex rhoncus hendrerit id ut nibh. Nam sollicitudin orci mi, ut porttitor tortor aliquam eu. Etiam consectetur sed justo sit amet laoreet. Morbi in porta erat. Curabitur in tincidunt nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus." parse-escape-sequences="true" display-tooltip-when-elided="true" name="DetailsText" class="details-text" />
+                </ui:ScrollView>
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1">
+                    <ui:Label tabindex="-1" text="System.Linq.Enumerable.First[TSource] (System.Collections.Generic.IEnumerable`1[T] source) (at &lt;dab7f68612224ba3ae40f651d44f9d4c&gt;:0)&#10;Unity.UI.Builder.BuilderInspectorStyleFields.OnFieldFocusIn (UnityEngine.UIElements.FocusInEvent evt) (at &lt;e0d0ac3834b84f5e9aab99425430873c&gt;:0)&#10;UnityEngine.UIElements.EventCallbackFunctor`1[TEventType].Invoke (UnityEngine.UIElements.EventBase evt, UnityEngine.UIElements.PropagationPhase propagationPhase) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.EventCallbackRegistry.InvokeCallbacks (UnityEngine.UIElements.EventBase evt, UnityEngine.UIElements.PropagationPhase propagationPhase) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.CallbackEventHandler.HandleEvent (UnityEngine.UIElements.EventBase evt) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.CallbackEventHandler.HandleEventAtCurrentTargetAndPhase (UnityEngine.UIElements.EventBase evt) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.CallbackEventHandler.UnityEngine.UIElements.IEventHandler.HandleEvent (UnityEngine.UIElements.EventBase evt) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.EventDispatchUtilities.HandleEventAcrossPropagationPath (UnityEngine.UIElements.EventBase evt) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.EventDispatchUtilities.PropagateEvent (UnityEngine.UIElements.EventBase evt) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.DefaultDispatchingStrategy.DispatchEvent (UnityEngine.UIElements.EventBase evt, UnityEngine.UIElements.IPanel panel) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.EventDispatcher.ApplyDispatchingStrategies (UnityEngine.UIElements.EventBase evt, UnityEngine.UIElements.IPanel panel, System.Boolean imguiEventIsInitiallyUsed) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.EventDispatcher.ProcessEvent (UnityEngine.UIElements.EventBase evt, UnityEngine.UIElements.IPanel panel) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.EventDispatcher.Dispatch (UnityEngine.UIElements.EventBase evt, UnityEngine.UIElements.IPanel panel, UnityEngine.UIElements.DispatchMode dispatchMode) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.BaseVisualElementPanel.SendEvent (UnityEngine.UIElements.EventBase e, UnityEngine.UIElements.DispatchMode dispatchMode) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.VisualElement.SendEvent (UnityEngine.UIElements.EventBase e, UnityEngine.UIElements.DispatchMode dispatchMode) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.FocusController.AboutToGrabFocus (UnityEngine.UIElements.Focusable focusable, UnityEngine.UIElements.Focusable willTakeFocusFrom, UnityEngine.UIElements.FocusChangeDirection direction, UnityEngine.UIElements.DispatchMode dispatchMode) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.FocusController.SwitchFocus (UnityEngine.UIElements.Focusable newFocusedElement, UnityEngine.UIElements.FocusChangeDirection direction, System.Boolean bIsFocusDelegated, UnityEngine.UIElements.DispatchMode dispatchMode) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.FocusController.SwitchFocus (UnityEngine.UIElements.Focusable newFocusedElement, System.Boolean bIsFocusDelegated, UnityEngine.UIElements.DispatchMode dispatchMode) (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.Focusable.Focus () (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.VisualElement.Focus () (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.FocusController.SetFocusToLastFocusedElement () (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.Panel.ValidateFocus () (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.UIElementsUtility.UnityEngine.UIElements.IUIElementsUtility.UpdateSchedulers () (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEngine.UIElements.UIEventRegistration.UpdateSchedulers () (at &lt;79c7b132c51745cbae03eebea8111c0e&gt;:0)&#10;UnityEditor.RetainedMode.UpdateSchedulers () (at &lt;c91a25f185b743118a39aafa100dff09&gt;:0)" parse-escape-sequences="true" display-tooltip-when-elided="true" class="details-text" />
+                </ui:ScrollView>
+            </ui:TwoPaneSplitView>
+        </ui:TwoPaneSplitView>
+    </ui:VisualElement>
+</ui:UXML>
