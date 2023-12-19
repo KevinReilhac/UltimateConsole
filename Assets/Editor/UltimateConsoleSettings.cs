@@ -5,38 +5,41 @@ using UnityEditor;
 using UnityEngine;
 using System;
 
-public class UltimateConsoleSettings : ScriptableObject
+namespace UltimateConsole
 {
-    public const string SETTINGS_PATH = "Assets/Plugins/UltimateConsole/UltimateConsoleSettings.asset";
-    private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
-
-    public List<ChanelSettings> chanelSettings;
-
-    internal static UltimateConsoleSettings GetOrCreateSettings()
+    public class UltimateConsoleSettings : ScriptableObject
     {
-        var settings = AssetDatabase.LoadAssetAtPath<UltimateConsoleSettings>(SETTINGS_PATH);
-        if (settings == null)
-        {
-            settings = CreateInstance<UltimateConsoleSettings>();
+        public const string SETTINGS_PATH = "Assets/Plugins/UltimateConsole/Editor/UltimateConsoleSettings.asset";
+        private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
 
-            //Settings default value
-            settings.chanelSettings = new List<ChanelSettings>()
+        public List<Chanel> chanelSettings;
+
+        internal static UltimateConsoleSettings GetOrCreateSettings()
+        {
+            var settings = AssetDatabase.LoadAssetAtPath<UltimateConsoleSettings>(SETTINGS_PATH);
+            if (settings == null)
             {
-                new ChanelSettings("Default", Color.white),
-                new ChanelSettings("Warning", Color.yellow),
-                new ChanelSettings("Error", Color.red),
+                settings = CreateInstance<UltimateConsoleSettings>();
+
+                //Settings default value
+                settings.chanelSettings = new List<Chanel>()
+            {
+                new Chanel("Default", Color.white),
+                new Chanel("Warning", Color.yellow),
+                new Chanel("Error", Color.red),
             };
-            if (!Directory.Exists(AbsoluteSettingsPath))
-                Directory.CreateDirectory(AbsoluteSettingsPath);
-            AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
-            AssetDatabase.SaveAssets();
+                if (!Directory.Exists(AbsoluteSettingsPath))
+                    Directory.CreateDirectory(AbsoluteSettingsPath);
+                AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
+                AssetDatabase.SaveAssets();
+            }
+
+            return settings;
         }
 
-        return settings;
-    }
-
-    internal static SerializedObject GetSerializedSettings()
-    {
-        return new SerializedObject(GetOrCreateSettings());
+        internal static SerializedObject GetSerializedSettings()
+        {
+            return new SerializedObject(GetOrCreateSettings());
+        }
     }
 }

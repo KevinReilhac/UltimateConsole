@@ -1,0 +1,16 @@
+{
+    "name": "UltimateConsole.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d6cfea90129b31c4d863d3296e6f6b3b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

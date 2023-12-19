@@ -2,24 +2,29 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-static class UltimateConsoleSettingsProvider
+namespace UltimateConsole
 {
-    [SettingsProvider]
-    public static SettingsProvider CreateSettingsProvider()
+    static class UltimateConsoleSettingsProvider
     {
-        SettingsProvider provider = new SettingsProvider("Project/UltimateConsole", SettingsScope.Project)
+        [SettingsProvider]
+        public static SettingsProvider CreateSettingsProvider()
         {
-            label = "UltimateConsole",
-            guiHandler = (searchContext) => 
+            SettingsProvider provider = new SettingsProvider("Project/UltimateConsole", SettingsScope.Project)
             {
-                SerializedObject settings = UltimateConsoleSettings.GetSerializedSettings();
+                label = "Ultimate Console",
+                guiHandler = (searchContext) =>
+                {
+                    SerializedObject settings = UltimateConsoleSettings.GetSerializedSettings();
 
-                EditorGUILayout.PropertyField(settings.FindProperty("chanelSettings"), new GUIContent("Settings"));
-            },
+                    EditorGUILayout.PropertyField(settings.FindProperty("chanelSettings"), new GUIContent("Chanels"));
+                    if (GUILayout.Button("Generate"))
+                        UltimateConsoleChanelsGenerator.Generate();
+                },
 
-            keywords = new HashSet<string>(new [] {"Ultimate", "Console", "Chanel"})
-        };
+                keywords = new HashSet<string>(new[] { "Ultimate", "Console", "Chanel" })
+            };
 
-        return provider;
+            return provider;
+        }
     }
 }
