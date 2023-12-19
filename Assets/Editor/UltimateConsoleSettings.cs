@@ -1,18 +1,18 @@
-using System.Collections;
 using System.IO;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System;
 
 namespace UltimateConsole
 {
     public class UltimateConsoleSettings : ScriptableObject
     {
+        [SerializeField] public Chanel[] chanelSettings;
+        [SerializeField] private string test;
+
+
+        #region GETTER
         public const string SETTINGS_PATH = "Assets/Plugins/UltimateConsole/Editor/UltimateConsoleSettings.asset";
         private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
-
-        public List<Chanel> chanelSettings;
 
         internal static UltimateConsoleSettings GetOrCreateSettings()
         {
@@ -22,12 +22,12 @@ namespace UltimateConsole
                 settings = CreateInstance<UltimateConsoleSettings>();
 
                 //Settings default value
-                settings.chanelSettings = new List<Chanel>()
-            {
-                new Chanel("Default", Color.white),
-                new Chanel("Warning", Color.yellow),
-                new Chanel("Error", Color.red),
-            };
+                settings.chanelSettings = new Chanel[] {
+                    new Chanel("Default", Color.white),
+                    new Chanel("Warning", Color.yellow),
+                    new Chanel("Error", Color.red),
+                };
+
                 if (!Directory.Exists(AbsoluteSettingsPath))
                     Directory.CreateDirectory(AbsoluteSettingsPath);
                 AssetDatabase.CreateAsset(settings, SETTINGS_PATH);
@@ -41,5 +41,6 @@ namespace UltimateConsole
         {
             return new SerializedObject(GetOrCreateSettings());
         }
+        #endregion
     }
 }

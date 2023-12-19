@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 
 namespace UltimateConsole
@@ -11,18 +12,18 @@ namespace UltimateConsole
     {
         private const string PATH = "Plugins/UltimateConsole/Chanels.cs";
 
-        public static bool Generate()
+        public static void Generate()
         {
             string fileString = ClassString.Replace("##CONTENT##", GetChanelStrings());
             
             File.WriteAllText(Path.Join(Application.dataPath, PATH), fileString, Encoding.UTF8);
-            return true;
+            AssetDatabase.Refresh();
         }
 
         private static string GetChanelStrings()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            List<Chanel> chanelsSettings = UltimateConsoleSettings.GetOrCreateSettings().chanelSettings;
+            Chanel[] chanelsSettings = UltimateConsoleSettings.GetOrCreateSettings().chanelSettings;
 
             foreach (Chanel chanel in chanelsSettings)
             {

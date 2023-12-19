@@ -9,22 +9,45 @@ namespace UltimateConsole
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider()
         {
-            SettingsProvider provider = new SettingsProvider("Project/UltimateConsole", SettingsScope.Project)
+            SettingsProvider provider = new SettingsProvider("Project/Ultimate Console", SettingsScope.Project)
             {
-                label = "Ultimate Console",
-                guiHandler = (searchContext) =>
-                {
-                    SerializedObject settings = UltimateConsoleSettings.GetSerializedSettings();
-
-                    EditorGUILayout.PropertyField(settings.FindProperty("chanelSettings"), new GUIContent("Chanels"));
-                    if (GUILayout.Button("Generate"))
-                        UltimateConsoleChanelsGenerator.Generate();
-                },
+                guiHandler = Drawer,
 
                 keywords = new HashSet<string>(new[] { "Ultimate", "Console", "Chanel" })
             };
 
             return provider;
+        }
+
+        private static void Drawer(string searchContext)
+        {
+            SerializedObject settings = UltimateConsoleSettings.GetSerializedSettings();
+            SerializedProperty chanelSettings = settings.FindProperty("chanelSettings");
+
+            settings.Update();
+            ChanelListDrawer(chanelSettings);
+            settings.ApplyModifiedProperties();
+            if (GUILayout.Button("Generate"))
+                UltimateConsoleChanelsGenerator.Generate();
+        }
+
+        private static void ChanelListDrawer(SerializedProperty chanels)
+        {
+            for (int i = 0; i < chanels.arraySize; i++)
+            {
+                SerializedProperty item = chanels.GetArrayElementAtIndex(i);
+    
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.PropertyField(item.FindPropertyRelative("name"));
+                EditorGUILayout.PropertyField(item.FindPropertyRelative("color"));
+                EditorGUILayout.PropertyField(item.FindPropertyRelative("icon"));
+                //Delete button on line
+                EditorGUILayout.EndHorizontal();
+            }
+
+
+            //Check chanel names doublon
+            //Plus minus button
         }
     }
 }
