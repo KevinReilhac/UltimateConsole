@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -64,12 +65,14 @@ namespace UltimateConsole
                 iconProperty = item.FindPropertyRelative("icon");
     
                 Color oldColor = GUI.color;
-                if (chanelNames.Contains(nameProperty.stringValue))
+                nameProperty.stringValue = nameProperty.stringValue.Trim();
+                if (chanelNames.Contains(nameProperty.stringValue)  ||
+                    nameProperty.stringValue == string.Empty            ||
+                    Regex.IsMatch(nameProperty.stringValue, @"^\d"))
                 {
                     GUI.color = Color.red;
                     valid = false;
                 }
-    
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(nameProperty, new GUIContent(""));
                 EditorGUILayout.PropertyField(iconProperty, new GUIContent(""));
