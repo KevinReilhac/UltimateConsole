@@ -21,7 +21,6 @@ public class UltimateConsoleWindow : EditorWindow
     {
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
-    
 
         // Instantiate UXML
         m_VisualTreeAsset.CloneTree(root);

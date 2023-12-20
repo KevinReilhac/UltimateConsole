@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -6,13 +8,32 @@ namespace UltimateConsole
 {
     public class UltimateConsoleSettings : ScriptableObject
     {
-        [SerializeField] public Chanel[] chanelSettings;
-        [SerializeField] private string test;
+        [SerializeField] internal LogChanelSettingChanel[] chanelSettings;
+        [SerializeField] internal Color defaultColor = Color.white;
+        [SerializeField] internal Color warningColor = Color.yellow;
+        [SerializeField] internal Color errorColor = Color.red;
 
+        private Dictionary<ushort, LogChanelSettingChanel> chanelSettingsDict = null;
+
+        private void FillChanelSettingsDict()
+        {
+            chanelSettingsDict = new Dictionary<ushort, LogChanelSettingChanel>();
+
+            for (ushort i = 0; i < chanelSettings.Length; i++)
+                chanelSettingsDict.Add(Convert.ToUInt16(i == 0 ? 0 : 1 << i), chanelSettings[i]);
+        }
 
         #region GETTER
         public const string SETTINGS_PATH = "Assets/Plugins/UltimateConsole/Editor/UltimateConsoleSettings.asset";
         private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
+
+        internal Texture2D GetChanelIcon(ushort chanelId)
+        {
+            if (chanelSettingsDict == null) FillChanelSettingsDict();
+            if (chanelSettingsDict.TryGetValue(chanelId, out LogChanelSettingChanel value))
+                return value.Icon;
+            return null;
+        }
 
         internal static UltimateConsoleSettings GetOrCreateSettings()
         {
@@ -22,10 +43,10 @@ namespace UltimateConsole
                 settings = CreateInstance<UltimateConsoleSettings>();
 
                 //Settings default value
-                settings.chanelSettings = new Chanel[] {
-                    new Chanel("Default", Color.white),
-                    new Chanel("Warning", Color.yellow),
-                    new Chanel("Error", Color.red),
+                settings.chanelSettings = new LogChanelSettingChanel[] {
+                    new LogChanelSettingChanel("UI"),
+                    new LogChanelSettingChanel("AI"),
+                    new LogChanelSettingChanel("Network"),
                 };
 
                 if (!Directory.Exists(AbsoluteSettingsPath))

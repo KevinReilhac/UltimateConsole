@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: UltimateConsoleSettings
   m_EditorClassIdentifier: 
   chanelSettings:
-  - name: Default
-    color: {r: 1, g: 1, b: 1, a: 1}
-    icon: {fileID: 0}
-  - name: Warning
-    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-    icon: {fileID: 0}
-  - name: Error
-    color: {r: 1, g: 0, b: 0, a: 1}
-    icon: {fileID: 0}
-  - name: ok
-    color: {r: 0, g: 1, b: 0.43116045, a: 1}
-    icon: {fileID: 0}
-  test: bonjouir
+  - name: UI
+    icon: {fileID: 2800000, guid: f0e12d742a5807c41a2489773d022861, type: 3}
+  - name: AI
+    icon: {fileID: 2800000, guid: 1410efc3a5df78a4885fb04bc28befa5, type: 3}
+  - name: Network
+    icon: {fileID: 2800000, guid: b0c01f93872662e4b908e011455da38a, type: 3}
+  - name: PlayerController
+    icon: {fileID: 2800000, guid: d4ed85bbaa421f047b184b6e64bf80d7, type: 3}
+  - name: SceneManagement
+    icon: {fileID: 2800000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  errorColor: {r: 1, g: 0, b: 0, a: 1}

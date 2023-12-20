@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using UnityEditor;
@@ -10,7 +12,7 @@ namespace UltimateConsole
 {
     internal static class UltimateConsoleChanelsGenerator
     {
-        private const string PATH = "Plugins/UltimateConsole/Chanels.cs";
+        private const string PATH = "Plugins/UltimateConsole/LogChanels.cs";
 
         public static void Generate()
         {
@@ -23,32 +25,29 @@ namespace UltimateConsole
         private static string GetChanelStrings()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            Chanel[] chanelsSettings = UltimateConsoleSettings.GetOrCreateSettings().chanelSettings;
+            LogChanelSettingChanel[] chanelsSettings = UltimateConsoleSettings.GetOrCreateSettings().chanelSettings;
 
-            foreach (Chanel chanel in chanelsSettings)
-            {
-                stringBuilder.AppendLine(GetChanelString(chanel.Name, chanel.Color));
-            }
+            stringBuilder.AppendLine(GetChanelString("Default", 0));
+            for (int i = 0; i < chanelsSettings.Length; i++)
+                stringBuilder.AppendLine(GetChanelString(chanelsSettings[i].Name, 1 << i));
 
             return stringBuilder.ToString();
         }
 
-        private static string GetChanelString(string name, Color color)
+        private static string GetChanelString(string name, int id)
         {
-            string r = color.r.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            string g = color.g.ToString(System.Globalization.CultureInfo.InvariantCulture);
-            string b = color.b.ToString(System.Globalization.CultureInfo.InvariantCulture);
-
-            return $"\t\tpublic static readonly Chanel {name} = new Chanel(\"{name}\", new Color({r}f, {g}f, {b}f));";
+            return $"        {name} = {id},";
         }
+
 
         private const string ClassString =
 @"
-using UnityEngine;
+using System;
 
 namespace UltimateConsole
 {
-    public static class Chanels
+    [Flags]
+    public enum LogChanels : ushort
     {
 ##CONTENT##
     }
