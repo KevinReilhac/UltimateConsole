@@ -66,7 +66,7 @@ namespace UltimateConsole
     
                 Color oldColor = GUI.color;
                 nameProperty.stringValue = nameProperty.stringValue.Trim();
-                if (chanelNames.Contains(nameProperty.stringValue)  ||
+                if (chanelNames.Contains(nameProperty.stringValue)      ||
                     nameProperty.stringValue == string.Empty            ||
                     Regex.IsMatch(nameProperty.stringValue, @"^\d"))
                 {
