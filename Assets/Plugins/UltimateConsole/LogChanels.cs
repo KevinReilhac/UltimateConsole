@@ -12,5 +12,6 @@ namespace UltimateConsole
         Network = 4,
         PlayerController = 8,
         SceneManagement = 16,
+
     }
 }

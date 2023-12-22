@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UltimateConsole;
 using UltimateConsole.Editor;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
@@ -47,7 +51,18 @@ namespace UltimateConsole.Editor.Window
             Label stacktraceText = root.Q<Label>("StackTraceText");
             logLinesContainer = root.Q<ScrollView>("LogLineContainer").contentContainer;
             logLinesContainer.Clear();
+
+            MaskField chanelsDropDown = root.Q<MaskField>("ChanelsDropdown");
+            SetupDropdownFields(chanelsDropDown);
             RegisterStackTraceTextLinks(stacktraceText);
+        }
+
+        private void SetupDropdownFields(MaskField chanelsDropdown)
+        {
+            List<string> enumNames = new List<string>() { "Default" };
+            enumNames.AddRange(settings.chanelSettings.Select(s => s.Name));
+
+            chanelsDropdown.choices = enumNames;
         }
 
 

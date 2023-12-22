@@ -12,11 +12,13 @@ namespace UltimateConsole
 {
     internal static class UltimateConsoleChanelsGenerator
     {
-        private const string PATH = "Plugins/UltimateConsole/LogChanels.cs";
+        public const string ENUM_NAME = "LogChanels";
+
+        private static readonly string PATH = $"Plugins/UltimateConsole/{ENUM_NAME}.cs";
 
         public static void Generate()
         {
-            string fileString = ClassString.Replace("##CONTENT##", GetChanelStrings());
+            string fileString = ClassString.Replace("##CONTENT##", GetChanelStrings()).Replace("##ENUM_NAME##", ENUM_NAME);
             
             File.WriteAllText(Path.Join(Application.dataPath, PATH), fileString, Encoding.UTF8);
             AssetDatabase.Refresh();
@@ -47,7 +49,7 @@ using System;
 namespace UltimateConsole
 {
     [Flags]
-    public enum LogChanels : ushort
+    public enum ##ENUM_NAME## : ushort
     {
 ##CONTENT##
     }
