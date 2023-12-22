@@ -10,9 +10,26 @@ namespace UltimateConsole
     {
         public static ULogList logList = new ULogList();
 
-        public static void Log(string message, ushort chanel = 0, LogType logType = LogType.Log, object context = null)
+        public static void RegisterLogHandler(IULogHandler logHandler)
         {
-            ULog newLogLine = new ULog(message, chanel, logType, context);
+            logList.onAddLine += logHandler.OnNewLog;
+            logList.onClear += logHandler.OnClearLogs;
+            logList.onRemoveLine += logHandler.OnRemoveLog;
+        }
+
+        public static void UnRegisterLogHandler(IULogHandler logHandler)
+        {
+            logList.onAddLine -= logHandler.OnNewLog;
+            logList.onClear -= logHandler.OnClearLogs;
+            logList.onRemoveLine -= logHandler.OnRemoveLog;
+        }
+
+        public static void Log(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
+        {
+            ushort chanelValue = Convert.ToUInt16(chanel);
+            ULog newLogLine = new ULog(message, chanelValue, logType, context);
+
+            logList.AddLine(newLogLine);
         }
 
         public static void LogFormat(string format, ushort chanel = 0, LogType logType = LogType.Log, object context = null, params object[] args)

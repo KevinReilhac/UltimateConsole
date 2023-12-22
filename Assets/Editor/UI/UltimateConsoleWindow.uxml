@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:Template name="DebugLine" src="project://database/Assets/Editor/UI/DebugLine.uxml?fileID=9197481963319205126&amp;guid=a694e4a1ac608a7408951b892595b349&amp;type=3#DebugLine" />
+    <ui:Template name="LogLine" src="project://database/Assets/Editor/UI/LogLine.uxml?fileID=9197481963319205126&amp;guid=a694e4a1ac608a7408951b892595b349&amp;type=3#LogLine" />
     <Style src="project://database/Assets/Editor/UI/UltimateConsoleWindowStyle.uss?fileID=7433441132597879392&amp;guid=f4f2a36fb9c405c4cbea73b118b43fc6&amp;type=3#UltimateConsoleWindowStyle" />
     <uie:Toolbar>
         <uie:ToolbarButton text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClearButton" style="-unity-text-align: middle-center; min-width: 40px;" />
@@ -15,21 +15,21 @@
     <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">
         <ui:TwoPaneSplitView orientation="Horizontal" fixed-pane-initial-dimension="352" style="flex-direction: row; height: 100%;">
             <ui:VisualElement name="DebugLines" style="flex-grow: 1;">
-                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="ScrollView" style="flex-grow: 1;">
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
-                    <ui:Instance template="DebugLine" name="DebugLine" />
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="LogLineContainer" style="flex-grow: 1;">
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
+                    <ui:Instance template="LogLine" name="DebugLine" />
                 </ui:ScrollView>
             </ui:VisualElement>
             <ui:TwoPaneSplitView name="Details" orientation="Vertical" style="flex-grow: 1;">

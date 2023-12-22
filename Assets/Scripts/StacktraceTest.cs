@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UltimateConsole;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class StacktraceTest : MonoBehaviour
     {
         btn.onClick.AddListener(() =>
         {
-            Debug.Log(StackTraceUtility.ExtractStackTrace());
+            UConsole.Log("My FIRST MESSAGE", LogChanels.PlayerController, LogType.Error);
         });
     }
 }

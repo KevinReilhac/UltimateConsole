@@ -10,6 +10,7 @@ namespace UltimateConsole
         UI = 1,
         AI = 2,
         Network = 4,
-
+        PlayerController = 8,
+        SceneManagement = 16,
     }
 }

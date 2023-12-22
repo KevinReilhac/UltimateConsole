@@ -9,9 +9,9 @@ namespace UltimateConsole
     public class UltimateConsoleSettings : ScriptableObject
     {
         [SerializeField] internal LogChanelSettingChanel[] chanelSettings;
-        [SerializeField] internal Color defaultColor = Color.white;
-        [SerializeField] internal Color warningColor = Color.yellow;
-        [SerializeField] internal Color errorColor = Color.red;
+        [SerializeField] private Color defaultColor = Color.white;
+        [SerializeField] private Color warningColor = Color.yellow;
+        [SerializeField] private Color errorColor = Color.red;
 
         private Dictionary<ushort, LogChanelSettingChanel> chanelSettingsDict = null;
 
@@ -61,6 +61,20 @@ namespace UltimateConsole
         internal static SerializedObject GetSerializedSettings()
         {
             return new SerializedObject(GetOrCreateSettings());
+        }
+
+        public Color GetColorFromLogType(LogType logType)
+        {
+            switch (logType)
+            {
+                case LogType.Exception:
+                case LogType.Error:
+                    return errorColor;
+                case LogType.Warning:
+                    return warningColor;
+                default:
+                    return defaultColor;
+            }
         }
         #endregion
     }

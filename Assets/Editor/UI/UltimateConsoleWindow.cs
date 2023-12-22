@@ -1,42 +1,96 @@
 using System;
+using UltimateConsole;
+using UltimateConsole.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 
-public class UltimateConsoleWindow : EditorWindow
+namespace UltimateConsole.Editor.Window
 {
-    [SerializeField]
-    private VisualTreeAsset m_VisualTreeAsset = default;
-
-    [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
-    public static void ShowExample()
+    public class UltimateConsoleWindow : EditorWindow, IULogHandler
     {
-        UltimateConsoleWindow wnd = GetWindow<UltimateConsoleWindow>();
-        wnd.titleContent = new GUIContent("UltimateConsoleWindow");
-    }
+        [SerializeField] private VisualTreeAsset VisualTreeAsset = default;
+        [SerializeField] private VisualTreeAsset debugLineTemplate;
 
-    public void CreateGUI()
-    {
-        // Each editor window contains a root VisualElement object
-        VisualElement root = rootVisualElement;
+        private VisualElement logLinesContainer = null;
+        private Label stackTraceText = null;
+        private UltimateConsoleSettings settings = null;
 
-        // Instantiate UXML
-        m_VisualTreeAsset.CloneTree(root);
+        [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
+        public static void ShowExample()
+        {
+            UltimateConsoleWindow wnd = GetWindow<UltimateConsoleWindow>();
+            wnd.titleContent = new GUIContent("Ultimate Console");
+        }
 
-        Label stacktraceText = root.Q<Label>(name = "StackTraceText");
-        RegisterStackTraceTextLinks(stacktraceText);
-    }
+        private void OnEnable()
+        {
+            settings = UltimateConsoleSettings.GetOrCreateSettings();
+            UConsole.RegisterLogHandler(this);
+        }
 
-    private void RegisterStackTraceTextLinks(Label label)
-    {
-        label.RegisterCallback<PointerUpLinkTagEvent>(StackTraceHyperLinkUp);
-    }
+        private void OnDisable()
+        {
+            UConsole.UnRegisterLogHandler(this);
+        }
 
-    private void StackTraceHyperLinkUp(PointerUpLinkTagEvent evt)
-    {
-        string[] splited = evt.linkText.Split(':');
-        InternalEditorUtility.OpenFileAtLineExternal(splited[0], int.Parse(splited[1]));
+        public void CreateGUI()
+        {
+            // Each editor window contains a root VisualElement object
+            VisualElement root = rootVisualElement;
+
+            // Instantiate UXML
+            VisualTreeAsset.CloneTree(root);
+
+            Label stacktraceText = root.Q<Label>("StackTraceText");
+            logLinesContainer = root.Q<ScrollView>("LogLineContainer").contentContainer;
+            logLinesContainer.Clear();
+            RegisterStackTraceTextLinks(stacktraceText);
+        }
+
+
+        private void RegisterStackTraceTextLinks(Label label)
+        {
+            label.RegisterCallback<PointerUpLinkTagEvent>(StackTraceHyperLinkUp);
+        }
+
+        private void StackTraceHyperLinkUp(PointerUpLinkTagEvent evt)
+        {
+            string[] splited = evt.linkText.Split(':');
+            InternalEditorUtility.OpenFileAtLineExternal(splited[0], int.Parse(splited[1]));
+        }
+
+        private void CreateLine(ULog log)
+        {
+            VisualElement visualElement = debugLineTemplate.Instantiate();
+
+            visualElement.userData = log;
+            Label text = visualElement.Q<Label>("Text");
+            VisualElement icon = visualElement.Q("Icon");
+
+            text.text = log.message;
+            text.style.color = settings.GetColorFromLogType(log.logType);
+
+            icon.style.backgroundImage = settings.GetChanelIcon(log.chanel);
+            logLinesContainer.Add(visualElement);
+        }
+
+        #region LogEvents
+        public void OnClearLogs()
+        {
+            logLinesContainer.Clear();
+        }
+
+        public void OnNewLog(ULog log)
+        {
+            CreateLine(log);
+        }
+
+        public void OnRemoveLog(ULog log)
+        {
+        }
+        #endregion
     }
 }

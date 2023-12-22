@@ -42,9 +42,9 @@ namespace UltimateConsole
             HorizontalLine();
             EditorGUILayout.Space();
             DrawTitle("LogTypes Color");
-            EditorGUILayout.PropertyField(settings.FindProperty(nameof(UltimateConsoleSettings.defaultColor)));
-            EditorGUILayout.PropertyField(settings.FindProperty(nameof(UltimateConsoleSettings.warningColor)));
-            EditorGUILayout.PropertyField(settings.FindProperty(nameof(UltimateConsoleSettings.errorColor)));
+            EditorGUILayout.PropertyField(settings.FindProperty("defaultColor"));
+            EditorGUILayout.PropertyField(settings.FindProperty("warningColor"));
+            EditorGUILayout.PropertyField(settings.FindProperty("errorColor"));
             settings.ApplyModifiedProperties();
         }
 
