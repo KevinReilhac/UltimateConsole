@@ -8,7 +8,7 @@ namespace UltimateConsole
 {
     public class ULogList
     {
-        private const int MAX_SIZE = 300;
+        private const int MAX_SIZE = 100;
 
         public event Action<ULog> onRemoveLine;
         public event Action<ULog> onAddLine;

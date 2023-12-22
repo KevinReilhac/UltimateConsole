@@ -2,11 +2,15 @@
     <ui:Template name="DebugLine" src="project://database/Assets/Editor/UI/DebugLine.uxml?fileID=9197481963319205126&amp;guid=a694e4a1ac608a7408951b892595b349&amp;type=3#DebugLine" />
     <Style src="project://database/Assets/Editor/UI/UltimateConsoleWindowStyle.uss?fileID=7433441132597879392&amp;guid=f4f2a36fb9c405c4cbea73b118b43fc6&amp;type=3#UltimateConsoleWindowStyle" />
     <uie:Toolbar>
-        <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Clear" />
-        <uie:ToolbarSpacer />
+        <uie:ToolbarButton text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClearButton" style="-unity-text-align: middle-center; min-width: 40px;" />
+        <uie:ToolbarToggle focusable="false" label="Collapse" name="CollapseToggle" style="-unity-text-align: upper-center; width: 64px; align-self: center; align-items: center;" />
+        <uie:ToolbarToggle focusable="false" label="Error Pause" name="ErrorPause" style="-unity-text-align: upper-center; width: 76px; align-self: center; align-items: center;" />
         <uie:ToolbarSpacer style="flex-grow: 1;" />
-        <uie:ToolbarSearchField focusable="true" />
-        <uie:MaskField choices="Warning, Error, Default" value="-1" usage-hints="None" tooltip="Chanel Selection" style="min-width: 200px;" />
+        <uie:ToolbarSearchField focusable="true" style="flex-grow: 0; flex-shrink: 1; width: 200px;" />
+        <uie:MaskField choices="Warning, Error, Default" value="-1" usage-hints="None" tooltip="Chanel Selection" style="min-width: 100px; flex-shrink: 0; flex-grow: 1; max-width: 150px;" />
+        <uie:ToolbarToggle focusable="false" label="123" name="LogToggle" class="logtype" />
+        <uie:ToolbarToggle focusable="false" label="12" name="WarningToggle" class="logtype" />
+        <uie:ToolbarToggle focusable="false" label="1" name="ErrorToggle" class="logtype" style="background-image: none;" />
     </uie:Toolbar>
     <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">
         <ui:TwoPaneSplitView orientation="Horizontal" fixed-pane-initial-dimension="352" style="flex-direction: row; height: 100%;">
