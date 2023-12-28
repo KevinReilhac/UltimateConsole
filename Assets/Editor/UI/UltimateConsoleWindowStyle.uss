@@ -49,3 +49,14 @@
     width: 10px;
     background-image: url('project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=2346436936791262179&guid=48101a6abaf4be54fbf49440383907e0&type=3#console.infoicon');
 }
+
+#LogLineContainer .log-line-selected #Line {
+    background-color: rgba(28, 76, 154, 0.38);
+}
+
+#LogLineContainer VisualElement#Line {
+    background-color: rgba(0, 0, 0, 0.38);
+}
+
+.click-cursor {
+}

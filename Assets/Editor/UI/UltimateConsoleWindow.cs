@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UltimateConsole;
 using UltimateConsole.Editor;
 using UnityEditor;
@@ -19,8 +20,10 @@ namespace UltimateConsole.Editor.Window
         [SerializeField] private VisualTreeAsset debugLineTemplate;
 
         private VisualElement logLinesContainer = null;
+        private VisualElement currentSelectedLogLine = null;
         private Label stackTraceText = null;
         private UltimateConsoleSettings settings = null;
+        private Label detailsText;
 
         [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
         public static void ShowExample()
@@ -48,13 +51,16 @@ namespace UltimateConsole.Editor.Window
             // Instantiate UXML
             VisualTreeAsset.CloneTree(root);
 
-            Label stacktraceText = root.Q<Label>("StackTraceText");
+            stackTraceText = root.Q<Label>("StackTraceText");
+            stackTraceText.text = string.Empty;
             logLinesContainer = root.Q<ScrollView>("LogLineContainer").contentContainer;
             logLinesContainer.Clear();
 
             MaskField chanelsDropDown = root.Q<MaskField>("ChanelsDropdown");
+            detailsText = root.Q<Label>("DetailsText");
+            detailsText.text = string.Empty;
             SetupDropdownFields(chanelsDropDown);
-            RegisterStackTraceTextLinks(stacktraceText);
+            RegisterStackTraceTextLinks(stackTraceText);
         }
 
         private void SetupDropdownFields(MaskField chanelsDropdown)
@@ -64,7 +70,6 @@ namespace UltimateConsole.Editor.Window
 
             chanelsDropdown.choices = enumNames;
         }
-
 
         private void RegisterStackTraceTextLinks(Label label)
         {
@@ -90,6 +95,36 @@ namespace UltimateConsole.Editor.Window
 
             icon.style.backgroundImage = settings.GetChanelIcon(log.chanel);
             logLinesContainer.Add(visualElement);
+
+            visualElement.RegisterCallback<ClickEvent>(OnClickDebugLine);
+        }
+
+        private void OnClickDebugLine(ClickEvent evt)
+        {
+            VisualElement selectedLine = evt.currentTarget as VisualElement;
+
+            if (selectedLine == currentSelectedLogLine)
+                return;
+            currentSelectedLogLine?.RemoveFromClassList("log-line-selected");
+            selectedLine.AddToClassList("log-line-selected");
+
+            ULog log = (ULog)selectedLine.userData;
+            detailsText.text = log.message;
+            SetStackTraceText(log.stacktrace);
+            currentSelectedLogLine = selectedLine;
+        }
+
+        private void SetStackTraceText(string stackTraceString)
+        {
+            //Remove 3 lines
+            stackTraceString = string.Join("\n\n", stackTraceString.Split('\n').Skip(3).ToArray());
+
+            //Place links tags
+            string pattern = @"\(\s*at\s*(.*?)\s*\)";
+            string replacement = "<link=\"1\"><color=#40a0ff><u>$1</u></color></link>";
+
+            string result = Regex.Replace(stackTraceString, pattern, replacement);
+            stackTraceText.text = result;
         }
 
         #region LogEvents

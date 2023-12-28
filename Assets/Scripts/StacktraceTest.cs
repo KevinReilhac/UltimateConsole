@@ -8,12 +8,18 @@ using UnityEngine.UI;
 public class StacktraceTest : MonoBehaviour
 {
     public Button btn;
+    public Button btn2;
 
     private void Awake()
     {
         btn.onClick.AddListener(() =>
         {
-            UConsole.Log("My FIRST MESSAGE", LogChanels.PlayerController, LogType.Error);
+            UConsole.LogWarning("My FIRST MESSAGE", LogChanels.PlayerController);
+        });
+
+        btn2.onClick.AddListener(() =>
+        {
+            UConsole.LogError("Second Message", LogChanels.AI, LogType.Error);
         });
     }
 }

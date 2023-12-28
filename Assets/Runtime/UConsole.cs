@@ -26,35 +26,37 @@ namespace UltimateConsole
 
         public static void Log(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
         {
-            ushort chanelValue = Convert.ToUInt16(chanel);
+            ushort chanelValue = 0;
+            if (chanel != null)
+                chanelValue = Convert.ToUInt16(chanel);
             ULog newLogLine = new ULog(message, chanelValue, logType, context);
 
             logList.AddLine(newLogLine);
         }
 
-        public static void LogFormat(string format, ushort chanel = 0, LogType logType = LogType.Log, object context = null, params object[] args)
+        public static void LogFormat(string format, IConvertible chanel = null, LogType logType = LogType.Log, object context = null, params object[] args)
         {
             string message = string.Format(format, args);
 
             Log(message, chanel, logType, context);
         }
 
-        public static void LogWarning(string message, ushort chanel = 0, object context = null)
+        public static void LogWarning(string message, IConvertible chanel = null, object context = null)
         {
             Log(message, chanel, LogType.Warning, context);
         }
 
-        public static void LogWarningFormat(string format, ushort chanel = 0, object context = null, params object[] args)
+        public static void LogWarningFormat(string format, IConvertible chanel = null, object context = null, params object[] args)
         {
             LogFormat(format, chanel, LogType.Warning, context, args);
         }
 
-        public static void LogError(string message, ushort chanel = 0, LogType logType = LogType.Log, object context = null)
+        public static void LogError(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
         {
             Log(message, chanel, LogType.Error, context);
         }
 
-        public static void LogErrorFormat(string format, ushort chanel = 0, object context = null, params object[] args)
+        public static void LogErrorFormat(string format, IConvertible chanel = null, object context = null, params object[] args)
         {
             LogFormat(format, chanel, LogType.Error, context, args);
         }
