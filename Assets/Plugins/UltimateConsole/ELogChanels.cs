@@ -4,7 +4,7 @@ using System;
 namespace UltimateConsole
 {
     [Flags]
-    public enum LogChanels : ushort
+    public enum ELogChanels : short
     {
         Default = 0,
         UI = 1,

@@ -26,9 +26,9 @@ namespace UltimateConsole
 
         public static void Log(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
         {
-            ushort chanelValue = 0;
+            short chanelValue = 0;
             if (chanel != null)
-                chanelValue = Convert.ToUInt16(chanel);
+                chanelValue = Convert.ToInt16(chanel);
             ULog newLogLine = new ULog(message, chanelValue, logType, context);
 
             logList.AddLine(newLogLine);

@@ -12,7 +12,7 @@ namespace UltimateConsole
 {
     internal static class UltimateConsoleChanelsGenerator
     {
-        public const string ENUM_NAME = "LogChanels";
+        public const string ENUM_NAME = "ELogChanels";
 
         private static readonly string PATH = $"Plugins/UltimateConsole/{ENUM_NAME}.cs";
 
@@ -49,7 +49,7 @@ using System;
 namespace UltimateConsole
 {
     [Flags]
-    public enum ##ENUM_NAME## : ushort
+    public enum ##ENUM_NAME## : short
     {
 ##CONTENT##
     }

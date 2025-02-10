@@ -14,12 +14,12 @@ public class StacktraceTest : MonoBehaviour
     {
         btn.onClick.AddListener(() =>
         {
-            UConsole.LogWarning("My FIRST MESSAGE", LogChanels.PlayerController);
+            UConsole.LogWarning("My FIRST MESSAGE", ELogChanels.PlayerController);
         });
 
         btn2.onClick.AddListener(() =>
         {
-            UConsole.LogError("Second Message", LogChanels.AI, LogType.Error);
+            UConsole.LogError("Second Message", ELogChanels.AI, LogType.Error);
         });
     }
 }

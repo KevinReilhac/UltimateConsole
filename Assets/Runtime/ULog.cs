@@ -8,12 +8,12 @@ namespace UltimateConsole
     {
         public Guid guid;
         public string message;
-        public ushort chanel;
+        public short chanel;
         public LogType logType;
         public object context;
         public string stacktrace;
 
-        public ULog(string message, ushort chanel, LogType logType, object context)
+        public ULog(string message, short chanel, LogType logType, object context)
         {
             this.guid = Guid.NewGuid();
             this.message = message;
