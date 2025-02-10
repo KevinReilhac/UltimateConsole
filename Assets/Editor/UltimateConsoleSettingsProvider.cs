@@ -9,6 +9,7 @@ namespace UltimateConsole
 {
     static class UltimateConsoleSettingsProvider
     {
+
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider()
         {
@@ -96,9 +97,10 @@ namespace UltimateConsole
             GUI.enabled = chanels.arraySize > 1;
             if (GUILayout.Button(EditorGUIUtility.IconContent("d_Toolbar Minus"), EditorStyles.miniButtonLeft, GUILayout.Width(50f)))
                 chanels.arraySize--;
-            GUI.enabled = true;
+            GUI.enabled = chanels.arraySize < UltimateConsoleChanelsGenerator.MAX_CHANEL_COUNT;
             if (GUILayout.Button(EditorGUIUtility.IconContent("d_Toolbar Plus"), EditorStyles.miniButtonRight, GUILayout.Width(50f)))
                 chanels.arraySize++;
+            GUI.enabled = true;
             EditorGUILayout.EndHorizontal();
             return valid;
         }

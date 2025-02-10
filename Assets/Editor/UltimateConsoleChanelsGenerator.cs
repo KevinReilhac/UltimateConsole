@@ -12,6 +12,9 @@ namespace UltimateConsole
 {
     internal static class UltimateConsoleChanelsGenerator
     {
+        //Max chanel count is 63, because of the long type
+        public const int MAX_CHANEL_COUNT = 63;
+
         public const string ENUM_NAME = "ELogChanels";
 
         private static readonly string PATH = $"Plugins/UltimateConsole/{ENUM_NAME}.cs";
@@ -30,8 +33,9 @@ namespace UltimateConsole
             LogChanelSettingChanel[] chanelsSettings = UltimateConsoleSettings.GetOrCreateSettings().chanelSettings;
 
             stringBuilder.AppendLine(GetChanelString("Default", 1));
-            for (int i = 0; i < chanelsSettings.Length; i++)
+            for (int i = 0; i < Mathf.Min(chanelsSettings.Length, MAX_CHANEL_COUNT); i++)
                 stringBuilder.AppendLine(GetChanelString(chanelsSettings[i].Name, 1 << (i + 1)));
+
 
             return stringBuilder.ToString();
         }
