@@ -4,14 +4,13 @@ using System;
 namespace UltimateConsole
 {
     [Flags]
-    public enum ELogChanels : short
+    public enum ELogChanels : long
     {
-        Default = 0,
-        UI = 1,
-        AI = 2,
-        Network = 4,
-        PlayerController = 8,
-        SceneManagement = 16,
-
+        Default = 1,
+        UI = 2,
+        AI = 4,
+        Network = 8,
+        PlayerController = 16,
+        SceneManagement = 32,
     }
 }

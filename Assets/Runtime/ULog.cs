@@ -6,16 +6,17 @@ namespace UltimateConsole
 {
     public struct ULog
     {
-        public Guid guid;
+        private const int HASHCODE_STACKTRACE_SUBSTRING_LENGHT = 100;
+
         public string message;
-        public short chanel;
+        public long chanel;
         public LogType logType;
         public object context;
         public string stacktrace;
 
-        public ULog(string message, short chanel, LogType logType, object context)
+
+        public ULog(string message, long chanel, LogType logType, object context)
         {
-            this.guid = Guid.NewGuid();
             this.message = message;
             this.chanel = chanel;
             this.logType = logType;
@@ -23,7 +24,14 @@ namespace UltimateConsole
             this.stacktrace = StackTraceUtility.ExtractStackTrace();
         }
 
-        public bool CheckFilters(ushort chanel, LogType[] logTypes)
+        public override int GetHashCode()
+        {
+            string stackTraceSubString = stacktrace.Substring(0, Math.Min(stacktrace.Length, HASHCODE_STACKTRACE_SUBSTRING_LENGHT));
+            return HashCode.Combine(message, chanel, logType, stackTraceSubString);
+        }
+
+
+        public bool CheckFilters(long chanel, LogType[] logTypes)
         {
             return (this.chanel & chanel) == chanel &&
                     logTypes.Contains(this.logType);

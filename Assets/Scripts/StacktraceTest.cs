@@ -1,25 +1,54 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UltimateConsole;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StacktraceTest : MonoBehaviour
 {
-    public Button btn;
-    public Button btn2;
+    public Button btnTemplate;
 
     private void Awake()
     {
-        btn.onClick.AddListener(() =>
+        btnTemplate.gameObject.SetActive(false);
+
+        CreateButton("PlayerController Log Warning", () =>
         {
-            UConsole.LogWarning("My FIRST MESSAGE", ELogChanels.PlayerController);
+            UConsole.LogWarning("Log Warning", ELogChanels.PlayerController);
         });
 
-        btn2.onClick.AddListener(() =>
+        CreateButton("AI Log Error", () =>
         {
-            UConsole.LogError("Second Message", ELogChanels.AI, LogType.Error);
+            UConsole.LogError("Log Error", ELogChanels.AI, LogType.Error);
         });
+
+        CreateButton("Unity default Log", () =>
+        {
+            Debug.Log("Unity log message");
+        });
+
+        CreateButton("Unity default error log", () =>
+        {
+            Debug.LogError("Unity error log message");
+        });
+
+        CreateButton("Context Log", () =>
+        {
+            UConsole.Log("Log", ELogChanels.Default, context: this);
+        });
+
     }
+
+    private void CreateButton(string text, Action onClick)
+
+    {
+        Button btn = Instantiate(btnTemplate, btnTemplate.transform.parent);
+        btn.gameObject.SetActive(true);
+        btn.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        btn.onClick.AddListener(() => onClick());
+
+    }
+
 }

@@ -26,7 +26,13 @@ namespace UltimateConsole.Editor.Window
         private Label detailsText;
         private LogFilters logFilters = new LogFilters();
 
-        private Dictionary<ULog, LogLine> logLinesFromULog = new Dictionary<ULog, LogLine>();
+        private Label logToggleCountLabel = null;
+        private Label warningToggleCountLabel = null;
+        private Label errorToggleCountLabel = null;
+
+        private Dictionary<ULog, List<LogLine>> logLinesFromULog = new Dictionary<ULog, List<LogLine>>();
+        private bool isCollapsed = false;
+
 
         [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
         public static void ShowExample()
@@ -37,39 +43,98 @@ namespace UltimateConsole.Editor.Window
 
         private void OnEnable()
         {
-            logFilters.OnLogFilterChanged += OnLogFilterChanged;
-            LogLine.OnLogLineSelected += OnLogLineSelected;
+            logFilters.OnLogFilterChanged += Refresh;
+            LogLine.OnLogLineSelected += SelectLogLine;
             settings = UltimateConsoleSettings.GetOrCreateSettings();
+            Application.logMessageReceived += OnUnityConsoleLog;
             UConsole.RegisterLogHandler(this);
         }
 
         private void OnDisable()
         {
-            logFilters.OnLogFilterChanged -= OnLogFilterChanged;
-            LogLine.OnLogLineSelected -= OnLogLineSelected;
+            logFilters.OnLogFilterChanged -= Refresh;
+            LogLine.OnLogLineSelected -= SelectLogLine;
+            Application.logMessageReceived -= OnUnityConsoleLog;
             UConsole.UnRegisterLogHandler(this);
         }
 
-        private void OnLogFilterChanged()
+        private void Refresh()
         {
             bool checkLog;
+            int logCount = 0;
+            int warningCount = 0;
+            int errorCount = 0;
+
             /// Hide loglines that are not in the filters
-            foreach (KeyValuePair<ULog, LogLine> logLine in logLinesFromULog)
+            foreach (KeyValuePair<ULog, List<LogLine>> logLines in logLinesFromULog)
+
             {
-                checkLog = logFilters.CheckLog(logLine.Key);
-                logLine.Value.style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
+                checkLog = logFilters.CheckLog(logLines.Key);
+                for (int i = 0; i < logLines.Value.Count; i++)
+                {
+                    switch (logLines.Key.logType)
+                    {
+                        case LogType.Log:
+                            logCount++;
+                            break;
+                        case LogType.Warning:
+                            warningCount++;
+                            break;
+                        case LogType.Error:
+                            errorCount++;
+                            break;
+                    }
+
+                    if (isCollapsed)
+                    {
+                        if (i == 0)
+                        {
+                            logLines.Value[i].style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
+                            logLines.Value[i].CollapsedCount = logLines.Value.Count;
+                        }
+                        else
+                            logLines.Value[i].style.display = DisplayStyle.None;
+                    }
+                    else
+                    {
+                        logLines.Value[i].style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
+                        logLines.Value[i].CollapsedCount = 0;
+                    }
+                }
             }
+
+            logToggleCountLabel.text = logCount.ToString();
+            warningToggleCountLabel.text = warningCount.ToString();
+            errorToggleCountLabel.text = errorCount.ToString();
         }
 
+        private void SelectLogLine(LogLine logLine)
 
-        private void OnLogLineSelected(LogLine logLine)
         {
+            //Ping context if it exists, Before checking if it is the same logline to letting the user spam
+            if (logLine != null && logLine.Log.HasValue && logLine.Log.Value.context != null)
+                EditorGUIUtility.PingObject(logLine.Log.Value.context as UnityEngine.Object);
+
+            //Check if the logline is the same as the current selected logline
+            if (currentSelectedLogLine == logLine) return;
+
+            //If there is a current selected logline, set it to not selected
             if (currentSelectedLogLine != null)
                 currentSelectedLogLine.IsSelected = false;
             currentSelectedLogLine = logLine;
 
-            detailsText.text = logLine.Log.Value.message;
-            SetStackTraceText(logLine.Log.Value.stacktrace);
+
+            //Update details text and stacktrace text
+            if (logLine != null)
+            {
+                detailsText.text = logLine.Log.Value.message;
+                SetStackTraceText(logLine.Log.Value.stacktrace);
+            }
+            else
+            {
+                detailsText.text = string.Empty;
+                SetStackTraceText(string.Empty);
+            }
         }
 
         public void CreateGUI()
@@ -96,8 +161,11 @@ namespace UltimateConsole.Editor.Window
 
             // Register log toggles
             ToolbarToggle logTypeToggle = root.Q<ToolbarToggle>("LogToggle");
+            logToggleCountLabel = logTypeToggle.Q<Label>();
             ToolbarToggle warningToggle = root.Q<ToolbarToggle>("WarningToggle");
+            warningToggleCountLabel = warningToggle.Q<Label>();
             ToolbarToggle errorToggle = root.Q<ToolbarToggle>("ErrorToggle");
+            errorToggleCountLabel = errorToggle.Q<Label>();
 
             logTypeToggle.RegisterCallback<ChangeEvent<bool>>(OnLogToggleChange);
             warningToggle.RegisterCallback<ChangeEvent<bool>>(OnLogWarningToggleChange);
@@ -147,9 +215,11 @@ namespace UltimateConsole.Editor.Window
 
         private void OnCollapseToggleChange(ChangeEvent<bool> evt)
         {
-            Debug.LogWarning("Collapse not implemented yet");
+            isCollapsed = evt.newValue;
+            Refresh();
         }
-#endregion
+        #endregion
+
 
         private void SetupDropdownFields(MaskField chanelsDropdown)
         {
@@ -196,28 +266,53 @@ namespace UltimateConsole.Editor.Window
         #endregion
 
         #region LogEvents
+
+        private void OnUnityConsoleLog(string logString, string stackTrace, LogType type)
+        {
+            ULog log = new ULog()
+            {
+                message = logString,
+                stacktrace = stackTrace,
+                logType = type,
+                chanel = 1
+            };
+
+            OnNewLog(log);
+        }
+
+
         public void OnClearLogs()
         {
+            SelectLogLine(null);
             logLinesContainer.Clear();
             logLinesFromULog.Clear();
+
+            Refresh();
         }
 
 
         public void OnNewLog(ULog log)
         {
             LogLine logLine = CreateLine(log);
-            logLinesFromULog.Add(log, logLine);
+            if (!logLinesFromULog.ContainsKey(log))
+            {
+                logLinesFromULog.Add(log, new List<LogLine>());
+            }
 
-            logLine.style.display = logFilters.CheckLog(log).isDisplayable ? DisplayStyle.Flex : DisplayStyle.None;
+            logLinesFromULog[log].Add(logLine);
+            Refresh();
         }
 
         public void OnRemoveLog(ULog log)
         {
-            if (logLinesFromULog.TryGetValue(log, out LogLine logLine))
+            if (logLinesFromULog.TryGetValue(log, out List<LogLine> logLines))
             {
-                logLinesContainer.Remove(logLine);
+                foreach (LogLine logLine in logLines)
+                    logLinesContainer.Remove(logLine);
                 logLinesFromULog.Remove(log);
             }
+            Refresh();
+
         }
         #endregion
 

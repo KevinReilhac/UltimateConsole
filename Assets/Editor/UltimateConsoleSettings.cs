@@ -9,31 +9,37 @@ namespace UltimateConsole
     public class UltimateConsoleSettings : ScriptableObject
     {
         [SerializeField] internal LogChanelSettingChanel[] chanelSettings;
+        [SerializeField] internal Texture2D defaultIcon;
         [SerializeField] private Color defaultColor = Color.white;
         [SerializeField] private Color warningColor = Color.yellow;
         [SerializeField] private Color errorColor = Color.red;
 
-        private Dictionary<ushort, LogChanelSettingChanel> chanelSettingsDict = null;
+        private Dictionary<long, LogChanelSettingChanel> chanelSettingsDict = null;
 
         private void FillChanelSettingsDict()
         {
-            chanelSettingsDict = new Dictionary<ushort, LogChanelSettingChanel>();
+            chanelSettingsDict = new Dictionary<long, LogChanelSettingChanel>();
 
-            for (ushort i = 0; i < chanelSettings.Length; i++)
-                chanelSettingsDict.Add(Convert.ToUInt16(i == 0 ? 0 : 1 << i), chanelSettings[i]);
+            for (int i = 0; i < chanelSettings.Length; i++)
+                chanelSettingsDict.Add(Convert.ToInt64(i == 0 ? 0 : 1L << i), chanelSettings[i]);
         }
 
         #region GETTER
         public const string SETTINGS_PATH = "Assets/Plugins/UltimateConsole/Editor/UltimateConsoleSettings.asset";
         private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
 
-        internal Texture2D GetChanelIcon(ushort chanelId)
+        internal Texture2D GetChanelIcon(long chanelId)
         {
+            if (chanelId == 1)
+                return defaultIcon;
+
             if (chanelSettingsDict == null) FillChanelSettingsDict();
             if (chanelSettingsDict.TryGetValue(chanelId, out LogChanelSettingChanel value))
                 return value.Icon;
-            return null;
+            return defaultIcon;
         }
+
+
 
         internal static UltimateConsoleSettings GetOrCreateSettings()
         {
@@ -48,6 +54,8 @@ namespace UltimateConsole
                     new LogChanelSettingChanel("AI"),
                     new LogChanelSettingChanel("Network"),
                 };
+
+                settings.defaultIcon = EditorGUIUtility.IconContent("console.infoicon.sml").image as Texture2D;
 
                 if (!Directory.Exists(AbsoluteSettingsPath))
                     Directory.CreateDirectory(AbsoluteSettingsPath);

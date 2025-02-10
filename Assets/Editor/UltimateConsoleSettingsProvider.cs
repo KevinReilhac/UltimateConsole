@@ -28,7 +28,7 @@ namespace UltimateConsole
 
             //Chanels
             DrawTitle("Chanels");
-            GUI.enabled = ChanelListDrawer(settings.FindProperty(nameof(UltimateConsoleSettings.chanelSettings)));
+            GUI.enabled = ChanelListDrawer(settings.FindProperty(nameof(UltimateConsoleSettings.chanelSettings)), settings.FindProperty(nameof(UltimateConsoleSettings.defaultIcon)));
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -48,7 +48,7 @@ namespace UltimateConsole
             settings.ApplyModifiedProperties();
         }
 
-        private static bool ChanelListDrawer(SerializedProperty chanels)
+        private static bool ChanelListDrawer(SerializedProperty chanels, SerializedProperty defaultChanelIcon)
         {
             //Variable Initialisation
             string[] chanelNames = new string[chanels.arraySize];
@@ -57,17 +57,26 @@ namespace UltimateConsole
             SerializedProperty iconProperty = null;
             bool valid = true;
 
+
+            //Default Chanel
+            EditorGUILayout.BeginHorizontal();
+            GUI.enabled = false;
+            EditorGUILayout.TextField("Default Chanel");
+            GUI.enabled = true;
+            EditorGUILayout.PropertyField(defaultChanelIcon, new GUIContent(""));
+            EditorGUILayout.EndHorizontal();
+
             //Lines
             for (int i = 0; i < chanels.arraySize; i++)
             {
                 item = chanels.GetArrayElementAtIndex(i);
                 nameProperty = item.FindPropertyRelative("name");
                 iconProperty = item.FindPropertyRelative("icon");
-    
+
                 Color oldColor = GUI.color;
                 nameProperty.stringValue = nameProperty.stringValue.Trim();
-                if (chanelNames.Contains(nameProperty.stringValue)      ||
-                    nameProperty.stringValue == string.Empty            ||
+                if (chanelNames.Contains(nameProperty.stringValue) ||
+                    nameProperty.stringValue == string.Empty ||
                     Regex.IsMatch(nameProperty.stringValue, @"^\d"))
                 {
                     GUI.color = Color.red;

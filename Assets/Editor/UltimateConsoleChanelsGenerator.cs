@@ -29,9 +29,9 @@ namespace UltimateConsole
             StringBuilder stringBuilder = new StringBuilder();
             LogChanelSettingChanel[] chanelsSettings = UltimateConsoleSettings.GetOrCreateSettings().chanelSettings;
 
-            stringBuilder.AppendLine(GetChanelString("Default", 0));
+            stringBuilder.AppendLine(GetChanelString("Default", 1));
             for (int i = 0; i < chanelsSettings.Length; i++)
-                stringBuilder.AppendLine(GetChanelString(chanelsSettings[i].Name, 1 << i));
+                stringBuilder.AppendLine(GetChanelString(chanelsSettings[i].Name, 1 << (i + 1)));
 
             return stringBuilder.ToString();
         }

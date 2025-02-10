@@ -104,21 +104,20 @@ namespace UltimateConsole.Editor.Window
         private void SetLogType(LogType logType)
         {
             _logType = logType;
-            messageLabel.style.color = _settings.GetColorFromLogType(logType);
+            icon.style.unityBackgroundImageTintColor = _settings.GetColorFromLogType(logType);
         }
 
-
-        private short _chanel = 0;
-        public short Chanel
+        private long _chanel = 0;
+        public long Chanel
         {
             get => _chanel;
             set => SetChanel(value);
         }
 
-        private void SetChanel(short chanel)
+        private void SetChanel(long chanel)
         {
             _chanel = chanel;
-            icon.style.backgroundImage = _settings.GetChanelIcon((ushort)chanel);
+            icon.style.backgroundImage = _settings.GetChanelIcon(chanel);
         }
 
         private bool _isSelected = false;

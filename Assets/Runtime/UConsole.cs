@@ -26,10 +26,11 @@ namespace UltimateConsole
 
         public static void Log(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
         {
-            short chanelValue = 0;
+            long chanelValue = 1;
             if (chanel != null)
-                chanelValue = Convert.ToInt16(chanel);
+                chanelValue = Convert.ToInt64(chanel);
             ULog newLogLine = new ULog(message, chanelValue, logType, context);
+
 
             logList.AddLine(newLogLine);
         }
@@ -51,7 +52,7 @@ namespace UltimateConsole
             LogFormat(format, chanel, LogType.Warning, context, args);
         }
 
-        public static void LogError(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
+        public static void LogError(string message, IConvertible chanel = null, object context = null)
         {
             Log(message, chanel, LogType.Error, context);
         }
