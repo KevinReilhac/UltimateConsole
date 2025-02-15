@@ -8,7 +8,12 @@ namespace UltimateConsole
 {
     public struct ULog
     {
-        private static readonly string[] STACKTRACE_EXLUDE_CLASSNAME = new string[] { nameof(ULog), nameof(UConsole) };
+        private static readonly string[] STACKTRACE_EXLUDE_CLASSNAME = new string[]
+        {
+            nameof(ULog), nameof(UConsole), nameof(Application),
+            "DebugLogHandler", nameof(Logger), nameof(UnityEngine.Debug)
+        };
+
         public string message;
         public long chanel;
         public LogType logType;
@@ -43,11 +48,14 @@ namespace UltimateConsole
 
         public override int GetHashCode()
         {
-            string stackTraceSubString = string.Empty;
-            if (stacktrace != null && stacktrace.Count > 0)
-                stackTraceSubString = stacktrace[0].ToString();
+            int hashCode = HashCode.Combine(message, chanel, logType);
 
-            return HashCode.Combine(message, chanel, logType, stackTraceSubString);
+            return hashCode;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj.GetHashCode() == GetHashCode();
         }
     }
 }

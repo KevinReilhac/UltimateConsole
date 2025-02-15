@@ -154,6 +154,24 @@ namespace UltimateConsole.Editor.Window
             _log = log;
         }
 
+        public void ResetSearchResult()
+        {
+            Message = Log.Value.message;
+        }
+
+        public void SetSearchResult(int startIndex, int endIndex)
+        {
+            string startmessage;
+            string midmessage;
+            string endmessage;
+
+            startmessage = Log.Value.message.Substring(0, startIndex);
+            midmessage = Log.Value.message.Substring(startIndex, endIndex - startIndex);
+            endmessage = Log.Value.message.Substring(endIndex);
+
+            Message = string.Format("{0}<color={1}>{2}</color>{3}", startmessage, UltimateConsoleWindowUtility.HighlightBackgroundColor, midmessage, endmessage);
+        }
+
         private int _collapsedCount = 0;
         public int CollapsedCount
         {
@@ -188,6 +206,7 @@ namespace UltimateConsole.Editor.Window
             messageLabel.AddToClassList(LOG_LINE_MESSAGE_CLASS);
             messageLabel.name = "message";
             messageLabel.text = "message";
+            messageLabel.enableRichText = true;
 
 
             icon = new VisualElement();

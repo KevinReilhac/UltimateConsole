@@ -9,7 +9,7 @@ namespace UltimateConsole
 {
     public class LogFilters
     {
-        private UltimateConsoleSettings _settings = null;
+        private UltimateConsoleSettings Settings => UltimateConsoleSettings.GetOrCreateSettings();
 
         public class LogFiltersResult
         {
@@ -72,7 +72,7 @@ namespace UltimateConsole
             // Check if the search text is not empty and if the log message contains the search text
             if (!string.IsNullOrEmpty(SearchText))
             {
-                result.isSearchStringSuccess = CheckSearchText(log.message, out int startIndex, out int endIndex);
+                result.isSearchStringSuccess = CheckSearchText(log.message, out result.searchStringStartIndex, out result.searchStringEndIndex);
                 if (result.isSearchStringSuccess == false)
                     result.isDisplayable = false;
             }
@@ -97,7 +97,7 @@ namespace UltimateConsole
         {
             LogFiltersResult result = new LogFiltersResult(true);
 
-            if (_settings.ExceptionDisplayMode.HasFlag(UltimateConsoleSettings.EExceptionDisplayMode.CheckChanel))
+            if (Settings.ExceptionDisplayMode.HasFlag(UltimateConsoleSettings.EExceptionDisplayMode.CheckChanel))
             {
                 if (!CheckChanel(log))
                 {
@@ -106,9 +106,9 @@ namespace UltimateConsole
                 }
             }
 
-            if (_settings.ExceptionDisplayMode.HasFlag(UltimateConsoleSettings.EExceptionDisplayMode.CheckLogType))
+            if (Settings.ExceptionDisplayMode.HasFlag(UltimateConsoleSettings.EExceptionDisplayMode.CheckLogType))
             {
-                if (_logTypes.Contains(LogType.Error)) 
+                if (!_logTypes.Contains(LogType.Error)) 
                 {
                     result.isDisplayable = false;
                     return result;

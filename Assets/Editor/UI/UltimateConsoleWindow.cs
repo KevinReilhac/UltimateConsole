@@ -70,30 +70,39 @@ namespace UltimateConsole.Editor.Window
 
         private void Refresh()
         {
-            bool checkLog = false;
+            LogFilters.LogFiltersResult checkLog = null;
             logTypesToggles?.ResetCounts();
 
             /// Hide loglines that are not in the filters
             foreach (KeyValuePair<ULog, List<LogLine>> logLines in logLinesFromULog)
             {
                 checkLog = logFilters.CheckLog(logLines.Key);
-                for (int i = 0; i < logLines.Value.Count; i++)
+                for (int logLineIndex = 0; logLineIndex < logLines.Value.Count; logLineIndex++)
                 {
                     logTypesToggles?.IncrementLogCount(logLines.Key.logType);
+
+                    if (logLines.Value[logLineIndex] == null)
+                        continue;
+
+                    if (checkLog.isDisplayable && checkLog.isSearchStringSuccess)
+                        logLines.Value[logLineIndex].SetSearchResult(checkLog.searchStringStartIndex, checkLog.searchStringEndIndex);
+                    else
+                        logLines.Value[logLineIndex].ResetSearchResult();
+
                     if (isCollapsed)
                     {
-                        if (i == 0)
+                        if (logLineIndex == 0)
                         {
-                            logLines.Value[i].style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
-                            logLines.Value[i].CollapsedCount = logLines.Value.Count;
+                            logLines.Value[logLineIndex].style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
+                            logLines.Value[logLineIndex].CollapsedCount = logLines.Value.Count;
                         }
                         else
-                            logLines.Value[i].style.display = DisplayStyle.None;
+                            logLines.Value[logLineIndex].style.display = DisplayStyle.None;
                     }
                     else
                     {
-                        logLines.Value[i].style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
-                        logLines.Value[i].CollapsedCount = 0;
+                        logLines.Value[logLineIndex].style.display = checkLog ? DisplayStyle.Flex : DisplayStyle.None;
+                        logLines.Value[logLineIndex].CollapsedCount = 0;
                     }
                 }
             }
@@ -166,7 +175,8 @@ namespace UltimateConsole.Editor.Window
             }
             else
             {
-                detailsText.text = string.Empty;
+                if (detailsText != null)
+                    detailsText.text = string.Empty;
                 SetStackTraceText(null);
             }
         }
@@ -283,6 +293,9 @@ namespace UltimateConsole.Editor.Window
 
         private void SetStackTraceText(List<StackFrame> stackTrace)
         {
+            if (stackTraceText == null)
+                return;
+
             if (stackTrace == null)
             {
                 stackTraceText.text = string.Empty;
@@ -303,19 +316,23 @@ namespace UltimateConsole.Editor.Window
         private string GetFrameText(StackFrame frame, int stacktraceIndex)
         {
             string linkText = string.Format("{0}({1},{2})", frame.GetFileName(), frame.GetFileLineNumber(), frame.GetFileColumnNumber());
+            string fileName = frame.GetFileName();
 
             StringBuilder frameText = new StringBuilder();
             frameText.Append(frame.GetMethod().DeclaringType.FullName);
             frameText.Append(".");
             frameText.Append(frame.GetMethod().Name);
-            frameText.Append(" at: ");
-            frameText.AppendFormat("<link=\"{0}\"><color=#40a0ff><u>", linkText);
-            frameText.Append(frame.GetFileName());
-            frameText.Append("(");
-            frameText.Append(frame.GetFileLineNumber());
-            frameText.Append(",");
-            frameText.Append(frame.GetFileColumnNumber());
-            frameText.Append(")");
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                frameText.Append(" at: ");
+                frameText.AppendFormat("<link=\"{0}\"><color=#40a0ff><u>", linkText);
+                frameText.Append(fileName);
+                frameText.Append("(");
+                frameText.Append(frame.GetFileLineNumber());
+                frameText.Append(",");
+                frameText.Append(frame.GetFileColumnNumber());
+                frameText.Append(")");
+            }
             frameText.Append("</color></u></link>");
             return frameText.ToString();
         }
@@ -327,12 +344,12 @@ namespace UltimateConsole.Editor.Window
             int lineNumber = 0;
             int columnNumber = 0;
 
-            if (splited.Length >= 1)
+            if (splited.Length > 1)
             {
                 if (int.TryParse(splited[1], out int lineParseResult))
                     lineNumber = lineParseResult;
             }
-            if (splited.Length >= 2)
+            if (splited.Length == 2)
             {
                 if (int.TryParse(splited[2], out int columnParseResult))
                     columnNumber = columnParseResult;
@@ -350,12 +367,7 @@ namespace UltimateConsole.Editor.Window
             if (logString.StartsWith(UConsole.DEFAULT_CONSOLE_LOG_START))
                 return;
 
-            ULog log = new ULog()
-            {
-                message = logString,
-                logType = type,
-                chanel = 1
-            };
+            ULog log = new ULog(logString, 1, type, null);
 
             OnNewLog(log);
         }
