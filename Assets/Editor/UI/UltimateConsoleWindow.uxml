@@ -8,9 +8,7 @@
         <uie:ToolbarSpacer style="flex-grow: 1;" />
         <uie:ToolbarSearchField focusable="true" style="flex-grow: 0; flex-shrink: 1; width: 200px;" />
         <uie:MaskField choices="Warning, Error, Default" value="-1" usage-hints="None" tooltip="Chanel Selection" name="ChanelsDropdown" style="min-width: 100px; flex-shrink: 0; flex-grow: 1; max-width: 150px;" />
-        <uie:ToolbarToggle focusable="false" label="123" name="LogToggle" class="logtype" />
-        <uie:ToolbarToggle focusable="false" label="12" name="WarningToggle" class="logtype" />
-        <uie:ToolbarToggle focusable="false" label="1" name="ErrorToggle" class="logtype" style="background-image: none;" />
+        <UltimateConsole.Editor.Window.LogTypesToggles />
     </uie:Toolbar>
     <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">
         <ui:TwoPaneSplitView orientation="Horizontal" fixed-pane-initial-dimension="352" style="flex-direction: row; height: 100%;">

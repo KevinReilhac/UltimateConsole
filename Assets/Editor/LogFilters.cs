@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace UltimateConsole
@@ -23,8 +24,8 @@ namespace UltimateConsole
 
         public event Action OnLogFilterChanged;
 
-        private short _chanels = -1;
-        public short Chanels
+        private long _chanels = -1;
+        public long Chanels
         {
             get => _chanels;
             set
@@ -94,6 +95,17 @@ namespace UltimateConsole
             endIndex = startIndex + SearchText.Length;
 
             return true;
+        }
+
+        public void UpdateLogTypes(List<LogType> logTypes)
+        {
+            bool isEqual = logTypes.Count == _logTypes.Count && 
+                logTypes.All(item => _logTypes.Contains(item));
+
+            if (isEqual) return;
+
+            _logTypes = logTypes;
+            OnLogFilterChanged?.Invoke();
         }
 
         public void UpdateLogTypes(LogType logType, bool isEnabled)

@@ -26,12 +26,11 @@ namespace UltimateConsole.Editor.Window
         private Label detailsText;
         private LogFilters logFilters = new LogFilters();
 
-        private Label logToggleCountLabel = null;
-        private Label warningToggleCountLabel = null;
-        private Label errorToggleCountLabel = null;
-
         private Dictionary<ULog, List<LogLine>> logLinesFromULog = new Dictionary<ULog, List<LogLine>>();
+        private LogTypesToggles logTypesToggles;
         private bool isCollapsed = false;
+        private bool isPauseOnError = false;
+
 
 
         [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
@@ -60,31 +59,16 @@ namespace UltimateConsole.Editor.Window
 
         private void Refresh()
         {
-            bool checkLog;
-            int logCount = 0;
-            int warningCount = 0;
-            int errorCount = 0;
+            bool checkLog = false;
+            logTypesToggles?.ResetCounts();
 
             /// Hide loglines that are not in the filters
             foreach (KeyValuePair<ULog, List<LogLine>> logLines in logLinesFromULog)
-
             {
                 checkLog = logFilters.CheckLog(logLines.Key);
                 for (int i = 0; i < logLines.Value.Count; i++)
                 {
-                    switch (logLines.Key.logType)
-                    {
-                        case LogType.Log:
-                            logCount++;
-                            break;
-                        case LogType.Warning:
-                            warningCount++;
-                            break;
-                        case LogType.Error:
-                            errorCount++;
-                            break;
-                    }
-
+                    logTypesToggles?.IncrementLogCount(logLines.Key.logType);
                     if (isCollapsed)
                     {
                         if (i == 0)
@@ -102,14 +86,9 @@ namespace UltimateConsole.Editor.Window
                     }
                 }
             }
-
-            logToggleCountLabel.text = logCount.ToString();
-            warningToggleCountLabel.text = warningCount.ToString();
-            errorToggleCountLabel.text = errorCount.ToString();
         }
 
         private void SelectLogLine(LogLine logLine)
-
         {
             //Ping context if it exists, Before checking if it is the same logline to letting the user spam
             if (logLine != null && logLine.Log.HasValue && logLine.Log.Value.context != null)
@@ -152,24 +131,17 @@ namespace UltimateConsole.Editor.Window
 
             MaskField chanelsDropDown = root.Q<MaskField>("ChanelsDropdown");
             chanelsDropDown.RegisterValueChangedCallback(OnChanelsChange);
+            chanelsDropDown.value = UltimateConsoleWindowPrefs.Chanels;
             detailsText = root.Q<Label>("DetailsText");
             detailsText.text = string.Empty;
+
+            logTypesToggles = root.Q<LogTypesToggles>();
+            logTypesToggles.SetLogTypes(UltimateConsoleWindowPrefs.GetEnabledLogTypes(), false);
+            logTypesToggles.OnLogTypesChanged += SetLogTypes;
 
             // Register search field
             ToolbarSearchField toolbarSearchField = root.Q<ToolbarSearchField>();
             toolbarSearchField.RegisterCallback<ChangeEvent<string>>(OnSearchFieldChange);
-
-            // Register log toggles
-            ToolbarToggle logTypeToggle = root.Q<ToolbarToggle>("LogToggle");
-            logToggleCountLabel = logTypeToggle.Q<Label>();
-            ToolbarToggle warningToggle = root.Q<ToolbarToggle>("WarningToggle");
-            warningToggleCountLabel = warningToggle.Q<Label>();
-            ToolbarToggle errorToggle = root.Q<ToolbarToggle>("ErrorToggle");
-            errorToggleCountLabel = errorToggle.Q<Label>();
-
-            logTypeToggle.RegisterCallback<ChangeEvent<bool>>(OnLogToggleChange);
-            warningToggle.RegisterCallback<ChangeEvent<bool>>(OnLogWarningToggleChange);
-            errorToggle.RegisterCallback<ChangeEvent<bool>>(OnLogErrorToggleChange);
 
             // Register clear button
             ToolbarButton clearButton = root.Q<ToolbarButton>("ClearButton");
@@ -178,34 +150,30 @@ namespace UltimateConsole.Editor.Window
             // Register collapse button
             ToolbarToggle collapseButton = root.Q<ToolbarToggle>("CollapseToggle");
             collapseButton.RegisterCallback<ChangeEvent<bool>>(OnCollapseToggleChange);
+            collapseButton.value = UltimateConsoleWindowPrefs.CollapseEnabled;
 
-
+            ToolbarToggle pauseOnErrorToggle = root.Q<ToolbarToggle>("ErrorPause");
+            pauseOnErrorToggle.RegisterCallback<ChangeEvent<bool>>(OnPauseOnErrorToggleChange);
+            pauseOnErrorToggle.value = UltimateConsoleWindowPrefs.ErrorPauseEnabled;
             SetupDropdownFields(chanelsDropDown);
-
             RegisterStackTraceTextLinks(stackTraceText);
+
+            logFilters.UpdateLogTypes(UltimateConsoleWindowPrefs.GetEnabledLogTypes());
         }
 
+        private void SetLogTypes(List<LogType> list)
+        {
+            logFilters.UpdateLogTypes(list);
+            UltimateConsoleWindowPrefs.SetEnabledLogTypes(list);
+            Refresh();
+        }
 
         #region UI_CALLBACKS
 
-        private void OnLogErrorToggleChange(ChangeEvent<bool> evt)
-        {
-            logFilters.UpdateLogTypes(LogType.Error, evt.newValue);
-        }
-
-        private void OnLogWarningToggleChange(ChangeEvent<bool> evt)
-        {
-            logFilters.UpdateLogTypes(LogType.Warning, evt.newValue);
-        }
-
-        private void OnLogToggleChange(ChangeEvent<bool> evt)
-        {
-            logFilters.UpdateLogTypes(LogType.Log, evt.newValue);
-        }
-
         private void OnChanelsChange(ChangeEvent<int> evt)
         {
-            logFilters.Chanels = (short)evt.newValue;
+            logFilters.Chanels = evt.newValue;
+            UltimateConsoleWindowPrefs.Chanels = evt.newValue;
         }
 
         private void OnSearchFieldChange(ChangeEvent<string> evt)
@@ -216,10 +184,17 @@ namespace UltimateConsole.Editor.Window
         private void OnCollapseToggleChange(ChangeEvent<bool> evt)
         {
             isCollapsed = evt.newValue;
+            UltimateConsoleWindowPrefs.CollapseEnabled = isCollapsed;
             Refresh();
         }
-        #endregion
 
+        private void OnPauseOnErrorToggleChange(ChangeEvent<bool> evt)
+        {
+            isPauseOnError = evt.newValue;
+            UltimateConsoleWindowPrefs.ErrorPauseEnabled = isPauseOnError;
+        }
+
+        #endregion
 
         private void SetupDropdownFields(MaskField chanelsDropdown)
         {
@@ -301,7 +276,13 @@ namespace UltimateConsole.Editor.Window
 
             logLinesFromULog[log].Add(logLine);
             Refresh();
+
+            if (isPauseOnError && (log.logType == LogType.Error || log.logType == LogType.Exception))
+            {
+                EditorApplication.isPaused = true;
+            }
         }
+
 
         public void OnRemoveLog(ULog log)
         {

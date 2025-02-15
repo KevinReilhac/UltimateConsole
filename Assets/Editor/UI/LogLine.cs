@@ -120,7 +120,6 @@ namespace UltimateConsole.Editor.Window
             icon.style.backgroundImage = _settings.GetChanelIcon(chanel);
         }
 
-        private bool _isSelected = false;
         public bool IsSelected
         {
             get => this.ClassListContains(IS_SELECTED_CLASS);

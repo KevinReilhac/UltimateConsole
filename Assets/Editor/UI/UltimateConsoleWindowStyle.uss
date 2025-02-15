@@ -13,41 +13,44 @@
     width: 100%;
 }
 
-.logtype .unity-toggle__input {
-    -unity-background-scale-mode: scale-to-fit;
-    flex-grow: 1;
-    flex-shrink: 0;
+.log-types-toggle-count-label {
+    margin-right: 0;
+    margin-left: 0;
+    left: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-left;
+    align-self: center;
+    position: absolute;
 }
 
-.logtype .unity-toggle__label {
+.log-types-toggle-icon {
     overflow: hidden;
     align-self: center;
     margin-right: 0;
-    width: 60%;
     -unity-text-align: upper-left;
-    align-items: auto;
+    flex-grow: 1;
+    height: 13px;
+    width: 13px;
+    position: absolute;
+    right: 2px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
-.logtype {
-    align-items: stretch;
-    margin-top: 1px;
-    flex-grow: 0;
+.log-types-toggle {
     width: 50px;
-}
-
-#ErrorToggle .unity-toggle__input {
-    width: 10px;
-    background-image: url('project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=8228938214290033325&guid=48101a6abaf4be54fbf49440383907e0&type=3#console.erroricon');
-}
-
-#WarningToggle .unity-toggle__input {
-    width: 10px;
-    background-image: url('project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=4584671053970592468&guid=48101a6abaf4be54fbf49440383907e0&type=3#console.warnicon');
-}
-
-#LogToggle .unity-toggle__input {
-    width: 10px;
-    background-image: url('project://database/Assets/UnityDefaultRuntimeTheme.tss?fileID=2346436936791262179&guid=48101a6abaf4be54fbf49440383907e0&type=3#console.infoicon');
+    flex-direction: row;
+    justify-content: center;
+    padding-right: 0;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 #LogLineContainer .log-line-selected {
@@ -59,4 +62,9 @@
 }
 
 .click-cursor {
+}
+
+.log-types-toggles {
+    flex-grow: 0;
+    flex-direction: row;
 }
