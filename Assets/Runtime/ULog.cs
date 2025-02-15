@@ -36,10 +36,15 @@ namespace UltimateConsole
         {
             StackTrace stackTrace = new StackTrace(true);
             List<StackFrame> stackFrames = new List<StackFrame>();
+
+            Type declaringType = null;
             foreach (StackFrame frame in stackTrace.GetFrames())
             {
+                declaringType = frame.GetMethod().DeclaringType;
                 //Exclude UltimateConsole classes from stacktrace
-                if (STACKTRACE_EXLUDE_CLASSNAME.Contains(frame.GetMethod().DeclaringType.Name))
+                if (STACKTRACE_EXLUDE_CLASSNAME.Contains(declaringType.Name))
+                    continue;
+                if (!string.IsNullOrEmpty(declaringType.Namespace) && declaringType.Namespace.Contains("UltimateConsole"))
                     continue;
                 stackFrames.Add(frame);
             }
