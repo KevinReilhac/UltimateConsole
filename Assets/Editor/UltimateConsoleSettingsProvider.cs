@@ -5,11 +5,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace UltimateConsole
+namespace UltimateConsole.Editor.Settings
 {
-    static class UltimateConsoleSettingsProvider
+    public partial class UltimateConsoleSettingsProvider
     {
-
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider()
         {
@@ -46,6 +45,14 @@ namespace UltimateConsole
             EditorGUILayout.PropertyField(settings.FindProperty("defaultColor"));
             EditorGUILayout.PropertyField(settings.FindProperty("warningColor"));
             EditorGUILayout.PropertyField(settings.FindProperty("errorColor"));
+            settings.ApplyModifiedProperties();
+
+            //Other Settings
+            HorizontalLine();
+            EditorGUILayout.Space();
+            DrawTitle("Other Settings");
+            EditorGUILayout.PropertyField(settings.FindProperty("exceptionDisplayMode"), UltimateConsoleSettingsProviderGUIContents.ExceptionDisplayModeContent);
+
             settings.ApplyModifiedProperties();
         }
 

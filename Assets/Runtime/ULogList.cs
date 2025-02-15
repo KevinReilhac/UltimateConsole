@@ -32,10 +32,5 @@ namespace UltimateConsole
             logs.Add(log);
             onAddLine?.Invoke(log);
         }
-
-        public List<ULog> GetWithFilters(ushort chanel, LogType[] logTypes)
-        {
-            return logs.Where(l => l.CheckFilters(chanel, logTypes)).ToList();
-        }
     }
 }

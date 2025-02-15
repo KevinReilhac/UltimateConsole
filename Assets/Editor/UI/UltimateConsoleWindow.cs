@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
+using UltimateConsole.Editor.Settings;
 
 namespace UltimateConsole.Editor.Window
 {
@@ -31,7 +32,8 @@ namespace UltimateConsole.Editor.Window
         private bool isCollapsed = false;
         private bool isPauseOnError = false;
 
-
+        private const string PARENTHESIS_FORMAT_PATTERN = @"Assets[/\\][^()]+\.cs\((\d+),(\d+)\)";
+        private const string COLON_FORMAT_PATTERN = @"Assets[/\\][^:]+\.cs:(\d+)";
 
         [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
         public static void ShowExample()
@@ -44,6 +46,7 @@ namespace UltimateConsole.Editor.Window
         {
             logFilters.OnLogFilterChanged += Refresh;
             LogLine.OnLogLineSelected += SelectLogLine;
+            LogLine.OnLogLineDoubleClicked += OnLogLineDoubleClicked;
             settings = UltimateConsoleSettings.GetOrCreateSettings();
             Application.logMessageReceived += OnUnityConsoleLog;
             UConsole.RegisterLogHandler(this);
@@ -53,6 +56,7 @@ namespace UltimateConsole.Editor.Window
         {
             logFilters.OnLogFilterChanged -= Refresh;
             LogLine.OnLogLineSelected -= SelectLogLine;
+            LogLine.OnLogLineDoubleClicked -= OnLogLineDoubleClicked;
             Application.logMessageReceived -= OnUnityConsoleLog;
             UConsole.UnRegisterLogHandler(this);
         }
@@ -102,7 +106,63 @@ namespace UltimateConsole.Editor.Window
                 currentSelectedLogLine.IsSelected = false;
             currentSelectedLogLine = logLine;
 
+            UpdateDetailsText(logLine);
+        }
 
+        private void OnLogLineDoubleClicked(LogLine logLine)
+        {
+            //If the logline is an error, try to open the parenthesis format (ex: Assets/Scripts/Main.cs(84,20))
+            if (logLine.LogType == LogType.Error)
+            {
+                if (TryOpenParenthesisFormat(logLine.Log.Value.message))
+                    return;
+            }
+
+            //Then try to open the colon format (ex: Assets/Scripts/Main.cs:84)
+            TryOpenColonFormat(logLine.Log.Value.message);
+        }
+
+        private bool TryOpenParenthesisFormat(string message)
+        {
+            Regex parenthesisFormat = new Regex(PARENTHESIS_FORMAT_PATTERN);
+            Match match = parenthesisFormat.Match(message);
+
+            if (!match.Success) return false;
+
+            string fullPath = match.Groups[0].Value;
+            string lineNumberStr = match.Groups[1].Value;
+            string columnNumberStr = match.Groups[2].Value;
+            fullPath = fullPath.Substring(0, fullPath.IndexOf("("));
+
+            if (int.TryParse(lineNumberStr, out int lineNumber))
+            {
+                InternalEditorUtility.OpenFileAtLineExternal(fullPath, lineNumber);
+                return true;
+            }
+            return false;
+        }
+
+        private bool TryOpenColonFormat(string message)
+        {
+            Regex colonFormat = new Regex(COLON_FORMAT_PATTERN);
+            Match match = colonFormat.Match(message);
+
+            if (!match.Success) return false;
+
+            string fullPath = match.Groups[0].Value;
+            string lineNumberStr = match.Groups[1].Value;
+            fullPath = fullPath.Substring(0, fullPath.IndexOf(":"));
+
+            if (int.TryParse(lineNumberStr, out int lineNumber))
+            {
+                InternalEditorUtility.OpenFileAtLineExternal(fullPath, lineNumber);
+                return true;
+            }
+            return false;
+        }
+
+        private void UpdateDetailsText(LogLine logLine)
+        {
             //Update details text and stacktrace text
             if (logLine != null)
             {
@@ -281,6 +341,10 @@ namespace UltimateConsole.Editor.Window
             {
                 EditorApplication.isPaused = true;
             }
+
+            //If there is no selected logline, update the details text from the last logline
+            if (currentSelectedLogLine == null && logFilters.CheckLog(log))
+                UpdateDetailsText(logLine);
         }
 
 

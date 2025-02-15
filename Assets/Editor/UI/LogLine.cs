@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UltimateConsole.Editor.Settings;
 
 namespace UltimateConsole.Editor.Window
 {
     public class LogLine : VisualElement
     {
         public static event Action<LogLine> OnLogLineSelected = null;
+        public static event Action<LogLine> OnLogLineDoubleClicked = null;
 
         private const string LOG_LINE_CLASS = "log-line";
         private const string LOG_LINE_MESSAGE_CLASS = "log-line-message";
@@ -16,6 +18,7 @@ namespace UltimateConsole.Editor.Window
         private const string LOG_LINE_COLLAPSED_COUNT_CONTAINER_CLASS = "log-line-collapsed-count-container";
         private const string LOG_LINE_COLLAPSED_COUNT_LABEL_CLASS = "log-line-collapsed-count-label";
         private const string IS_SELECTED_CLASS = "log-line-selected";
+        private const float DOUBLE_CLICK_TIME_THRESHOLD = 0.3f;
         private Label messageLabel = null;
         private VisualElement icon = null;
         private VisualElement collapsedCountContainer = null;
@@ -23,13 +26,14 @@ namespace UltimateConsole.Editor.Window
 
 
         private UltimateConsoleSettings _settings = null;
+        private float lastClickTime = 0f;
 
         #region Attributes
-        public new class UxmlFactory : UxmlFactory<LogLine, UxmlTraits> 
+        public new class UxmlFactory : UxmlFactory<LogLine, UxmlTraits>
         {
             public override string uxmlQualifiedName => "UltimateConsole.Editor.Window.LogLine";
         }
-        
+
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
             UxmlStringAttributeDescription messageAttr = new UxmlStringAttributeDescription()
@@ -213,8 +217,11 @@ namespace UltimateConsole.Editor.Window
 
         private void OnClick(ClickEvent evt)
         {
+            if (Time.time - lastClickTime < DOUBLE_CLICK_TIME_THRESHOLD)
+                OnLogLineDoubleClicked?.Invoke(this);
             IsSelected = true;
             OnLogLineSelected?.Invoke(this);
+            lastClickTime = Time.time;
         }
     }
 

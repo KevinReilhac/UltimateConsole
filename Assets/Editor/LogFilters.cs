@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UltimateConsole.Editor.Settings;
 using UnityEngine;
 
 namespace UltimateConsole
 {
     public class LogFilters
     {
+        private UltimateConsoleSettings _settings = null;
+
         public class LogFiltersResult
         {
             public bool isDisplayable;
@@ -19,6 +22,11 @@ namespace UltimateConsole
             public static implicit operator bool(LogFiltersResult result)
             {
                 return result.isDisplayable;
+            }
+
+            public LogFiltersResult(bool isDisplayable)
+            {
+                this.isDisplayable = isDisplayable;
             }
         }
 
@@ -53,9 +61,13 @@ namespace UltimateConsole
 
         public LogFiltersResult CheckLog(ULog log)
         {
-            LogFiltersResult result = new LogFiltersResult();
+            // Check special log types, Assert is not filtered and Exception depends on the settings
+            if (log.logType == LogType.Assert)
+                return new LogFiltersResult(true);
+            else if (log.logType == LogType.Exception)
+                return CheckLogForException(log);
 
-            result.isDisplayable = true;
+            LogFiltersResult result = new LogFiltersResult(true);
 
             // Check if the search text is not empty and if the log message contains the search text
             if (!string.IsNullOrEmpty(SearchText))
@@ -66,12 +78,42 @@ namespace UltimateConsole
             }
 
             // Check if the log type is in the list of log types filter
-            if (_logTypes.Count > 0 && !_logTypes.Contains(log.logType))
+            if (CheckLogType(log))
                 result.isDisplayable = false;
 
             // Check if the log chanel is in the list of chanels filter
             if (!CheckChanel(log))
                 result.isDisplayable = false;
+
+            return result;
+        }
+
+        private bool CheckLogType(ULog log)
+        {
+            return _logTypes.Count > 0 && !_logTypes.Contains(log.logType);
+        }
+
+        private LogFiltersResult CheckLogForException(ULog log)
+        {
+            LogFiltersResult result = new LogFiltersResult(true);
+
+            if (_settings.ExceptionDisplayMode.HasFlag(UltimateConsoleSettings.EExceptionDisplayMode.CheckChanel))
+            {
+                if (!CheckChanel(log))
+                {
+                    result.isDisplayable = false;
+                    return result;
+                }
+            }
+
+            if (_settings.ExceptionDisplayMode.HasFlag(UltimateConsoleSettings.EExceptionDisplayMode.CheckLogType))
+            {
+                if (_logTypes.Contains(LogType.Error)) 
+                {
+                    result.isDisplayable = false;
+                    return result;
+                }
+            }
 
             return result;
         }

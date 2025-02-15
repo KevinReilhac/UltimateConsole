@@ -4,15 +4,24 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace UltimateConsole
+namespace UltimateConsole.Editor.Settings
 {
     public class UltimateConsoleSettings : ScriptableObject
     {
+        [Flags]
+        public enum EExceptionDisplayMode
+        {
+            CheckChanel = 1,
+            CheckLogType = 2,
+        }
+
         [SerializeField] internal LogChanelSettingChanel[] chanelSettings;
         [SerializeField] internal Texture2D defaultIcon;
         [SerializeField] private Color defaultColor = Color.white;
         [SerializeField] private Color warningColor = Color.yellow;
         [SerializeField] private Color errorColor = Color.red;
+
+        [SerializeField] private EExceptionDisplayMode exceptionDisplayMode = EExceptionDisplayMode.CheckChanel | EExceptionDisplayMode.CheckLogType;
 
         private Dictionary<long, LogChanelSettingChanel> chanelSettingsDict = null;
 
@@ -38,8 +47,6 @@ namespace UltimateConsole
                 return value.Icon;
             return defaultIcon;
         }
-
-
 
         internal static UltimateConsoleSettings GetOrCreateSettings()
         {
@@ -69,6 +76,11 @@ namespace UltimateConsole
         internal static SerializedObject GetSerializedSettings()
         {
             return new SerializedObject(GetOrCreateSettings());
+        }
+
+        public EExceptionDisplayMode ExceptionDisplayMode
+        {
+            get => exceptionDisplayMode;
         }
 
         public Color GetColorFromLogType(LogType logType)

@@ -39,6 +39,16 @@ public class StacktraceTest : MonoBehaviour
             UConsole.Log("Log", ELogChanels.Default, context: this);
         });
 
+        CreateButton("Exception Log", () =>
+        {
+            throw new Exception("Exception log message");
+        });
+
+        CreateButton("Assert Log", () =>
+        {
+            Debug.Assert(false, "Assert log message");
+        });
+
     }
 
     private void CreateButton(string text, Action onClick)

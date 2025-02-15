@@ -7,8 +7,9 @@ using System.Security.AccessControl;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UltimateConsole.Editor.Settings;
 
-namespace UltimateConsole
+namespace UltimateConsole.Editor
 {
     internal static class UltimateConsoleChanelsGenerator
     {

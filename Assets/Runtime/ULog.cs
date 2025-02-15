@@ -29,12 +29,5 @@ namespace UltimateConsole
             string stackTraceSubString = stacktrace.Substring(0, Math.Min(stacktrace.Length, HASHCODE_STACKTRACE_SUBSTRING_LENGHT));
             return HashCode.Combine(message, chanel, logType, stackTraceSubString);
         }
-
-
-        public bool CheckFilters(long chanel, LogType[] logTypes)
-        {
-            return (this.chanel & chanel) == chanel &&
-                    logTypes.Contains(this.logType);
-        }
     }
 }
