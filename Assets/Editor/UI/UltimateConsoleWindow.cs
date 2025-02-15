@@ -12,6 +12,8 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityEngine.UIElements.Experimental;
 using UltimateConsole.Editor.Settings;
+using System.Diagnostics;
+using System.Text;
 
 namespace UltimateConsole.Editor.Window
 {
@@ -33,7 +35,6 @@ namespace UltimateConsole.Editor.Window
         private bool isPauseOnError = false;
 
         private const string PARENTHESIS_FORMAT_PATTERN = @"Assets[/\\][^()]+\.cs\((\d+),(\d+)\)";
-        private const string COLON_FORMAT_PATTERN = @"Assets[/\\][^:]+\.cs:(\d+)";
 
         [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
         public static void ShowExample()
@@ -44,10 +45,11 @@ namespace UltimateConsole.Editor.Window
 
         private void OnEnable()
         {
+            settings = UltimateConsoleSettings.GetOrCreateSettings();
+
             logFilters.OnLogFilterChanged += Refresh;
             LogLine.OnLogLineSelected += SelectLogLine;
             LogLine.OnLogLineDoubleClicked += OnLogLineDoubleClicked;
-            settings = UltimateConsoleSettings.GetOrCreateSettings();
             Application.logMessageReceived += OnUnityConsoleLog;
             UConsole.RegisterLogHandler(this);
         }
@@ -59,6 +61,11 @@ namespace UltimateConsole.Editor.Window
             LogLine.OnLogLineDoubleClicked -= OnLogLineDoubleClicked;
             Application.logMessageReceived -= OnUnityConsoleLog;
             UConsole.UnRegisterLogHandler(this);
+        }
+
+        private void OnBecameVisible()
+        {
+            Refresh();
         }
 
         private void Refresh()
@@ -117,9 +124,16 @@ namespace UltimateConsole.Editor.Window
                 if (TryOpenParenthesisFormat(logLine.Log.Value.message))
                     return;
             }
-
-            //Then try to open the colon format (ex: Assets/Scripts/Main.cs:84)
-            TryOpenColonFormat(logLine.Log.Value.message);
+            if (logLine.Log != null)
+            {
+                string fileName = logLine.Log.Value.stacktrace[0].GetFileName();
+                int lineNumber = logLine.Log.Value.stacktrace[0].GetFileLineNumber();
+                int columnNumber = logLine.Log.Value.stacktrace[0].GetFileColumnNumber();
+                if (fileName != null)
+                {
+                    InternalEditorUtility.OpenFileAtLineExternal(fileName, lineNumber, columnNumber);
+                }
+            }
         }
 
         private bool TryOpenParenthesisFormat(string message)
@@ -142,25 +156,6 @@ namespace UltimateConsole.Editor.Window
             return false;
         }
 
-        private bool TryOpenColonFormat(string message)
-        {
-            Regex colonFormat = new Regex(COLON_FORMAT_PATTERN);
-            Match match = colonFormat.Match(message);
-
-            if (!match.Success) return false;
-
-            string fullPath = match.Groups[0].Value;
-            string lineNumberStr = match.Groups[1].Value;
-            fullPath = fullPath.Substring(0, fullPath.IndexOf(":"));
-
-            if (int.TryParse(lineNumberStr, out int lineNumber))
-            {
-                InternalEditorUtility.OpenFileAtLineExternal(fullPath, lineNumber);
-                return true;
-            }
-            return false;
-        }
-
         private void UpdateDetailsText(LogLine logLine)
         {
             //Update details text and stacktrace text
@@ -172,7 +167,7 @@ namespace UltimateConsole.Editor.Window
             else
             {
                 detailsText.text = string.Empty;
-                SetStackTraceText(string.Empty);
+                SetStackTraceText(null);
             }
         }
 
@@ -190,6 +185,7 @@ namespace UltimateConsole.Editor.Window
             logLinesContainer.Clear();
 
             MaskField chanelsDropDown = root.Q<MaskField>("ChanelsDropdown");
+            chanelsDropDown.choices = settings.chanelSettings.Select(s => s.Name).ToList();
             chanelsDropDown.RegisterValueChangedCallback(OnChanelsChange);
             chanelsDropDown.value = UltimateConsoleWindowPrefs.Chanels;
             detailsText = root.Q<Label>("DetailsText");
@@ -219,6 +215,8 @@ namespace UltimateConsole.Editor.Window
             RegisterStackTraceTextLinks(stackTraceText);
 
             logFilters.UpdateLogTypes(UltimateConsoleWindowPrefs.GetEnabledLogTypes());
+
+            Refresh();
         }
 
         private void SetLogTypes(List<LogType> list)
@@ -266,6 +264,9 @@ namespace UltimateConsole.Editor.Window
 
         private LogLine CreateLine(ULog log)
         {
+            if (logLinesContainer == null)
+                return null;
+
             LogLine logLine = new LogLine();
             logLine.Log = log;
             logLinesContainer.Add(logLine);
@@ -280,23 +281,64 @@ namespace UltimateConsole.Editor.Window
             label.RegisterCallback<PointerUpLinkTagEvent>(StackTraceHyperLinkUp);
         }
 
-        private void SetStackTraceText(string stackTraceString)
+        private void SetStackTraceText(List<StackFrame> stackTrace)
         {
-            //Remove 3 lines
-            stackTraceString = string.Join("\n\n", stackTraceString.Split('\n').Skip(3).ToArray());
+            if (stackTrace == null)
+            {
+                stackTraceText.text = string.Empty;
+                return;
+            }
 
-            //Place links tags
-            string pattern = @"\(\s*at\s*(.*?)\s*\)";
-            string replacement = "<link=\"1\"><color=#40a0ff><u>$1</u></color></link>";
+            StringBuilder stackTraceBuilder = new StringBuilder();
 
-            string result = Regex.Replace(stackTraceString, pattern, replacement);
-            stackTraceText.text = result;
+            for (int i = 1; i < stackTrace.Count; i++)
+            {
+                stackTraceBuilder.AppendLine(GetFrameText(stackTrace[i], i));
+                stackTraceBuilder.AppendLine();
+            }
+
+            stackTraceText.text = stackTraceBuilder.ToString();
+        }
+
+        private string GetFrameText(StackFrame frame, int stacktraceIndex)
+        {
+            string linkText = string.Format("{0}({1},{2})", frame.GetFileName(), frame.GetFileLineNumber(), frame.GetFileColumnNumber());
+
+            StringBuilder frameText = new StringBuilder();
+            frameText.Append(frame.GetMethod().DeclaringType.FullName);
+            frameText.Append(".");
+            frameText.Append(frame.GetMethod().Name);
+            frameText.Append(" at: ");
+            frameText.AppendFormat("<link=\"{0}\"><color=#40a0ff><u>", linkText);
+            frameText.Append(frame.GetFileName());
+            frameText.Append("(");
+            frameText.Append(frame.GetFileLineNumber());
+            frameText.Append(",");
+            frameText.Append(frame.GetFileColumnNumber());
+            frameText.Append(")");
+            frameText.Append("</color></u></link>");
+            return frameText.ToString();
         }
 
         private void StackTraceHyperLinkUp(PointerUpLinkTagEvent evt)
         {
-            string[] splited = evt.linkText.Split(':');
-            InternalEditorUtility.OpenFileAtLineExternal(splited[0], int.Parse(splited[1]));
+            string[] splited = evt.linkID.Split(',');
+            string fileName = splited[0];
+            int lineNumber = 0;
+            int columnNumber = 0;
+
+            if (splited.Length >= 1)
+            {
+                if (int.TryParse(splited[1], out int lineParseResult))
+                    lineNumber = lineParseResult;
+            }
+            if (splited.Length >= 2)
+            {
+                if (int.TryParse(splited[2], out int columnParseResult))
+                    columnNumber = columnParseResult;
+            }
+
+            InternalEditorUtility.OpenFileAtLineExternal(fileName, lineNumber, columnNumber);
         }
         #endregion
 
@@ -304,10 +346,13 @@ namespace UltimateConsole.Editor.Window
 
         private void OnUnityConsoleLog(string logString, string stackTrace, LogType type)
         {
+            //Ignore default console log if it is from UConsole
+            if (logString.StartsWith(UConsole.DEFAULT_CONSOLE_LOG_START))
+                return;
+
             ULog log = new ULog()
             {
                 message = logString,
-                stacktrace = stackTrace,
                 logType = type,
                 chanel = 1
             };

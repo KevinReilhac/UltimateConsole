@@ -8,6 +8,9 @@ namespace UltimateConsole
 {
     public static class UConsole
     {
+        public const string DEFAULT_CONSOLE_LOG_START = "ULog";
+        private const string DEFAULT_CONSOLE_LOG_FORMAT = DEFAULT_CONSOLE_LOG_START + "({0}) : {1}";
+
         public static ULogList logList = new ULogList();
 
         public static void RegisterLogHandler(IULogHandler logHandler)
@@ -30,7 +33,22 @@ namespace UltimateConsole
             if (chanel != null)
                 chanelValue = Convert.ToInt64(chanel);
             ULog newLogLine = new ULog(message, chanelValue, logType, context);
+            string chanelName = chanel != null ? chanel.ToString() : "Default";
 
+            string defaultConsoleLogLine = string.Format(DEFAULT_CONSOLE_LOG_FORMAT, chanelName, newLogLine.message);
+
+            switch (logType)
+            {
+                case LogType.Log:
+                    Debug.Log(defaultConsoleLogLine, context as UnityEngine.Object);
+                    break;
+                case LogType.Warning:
+                    Debug.LogWarning(defaultConsoleLogLine, context as UnityEngine.Object);
+                    break;
+                case LogType.Error:
+                    Debug.LogError(defaultConsoleLogLine, context as UnityEngine.Object);
+                    break;
+            }
 
             logList.AddLine(newLogLine);
         }
