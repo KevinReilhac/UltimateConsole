@@ -48,10 +48,10 @@ namespace PrismLog.Editor.Window
                 defaultValue = LogType.Log,
             };
 
-            UxmlIntAttributeDescription ChanelAttr = new UxmlIntAttributeDescription()
+            UxmlEnumAttributeDescription<PrismLogChanel> ChanelAttr = new UxmlEnumAttributeDescription<PrismLogChanel>()
             {
                 name = "chanel",
-                defaultValue = 0,
+                defaultValue = PrismLogChanel.Default,
             };
 
             UxmlBoolAttributeDescription IsSelectedAttr = new UxmlBoolAttributeDescription()
@@ -74,7 +74,7 @@ namespace PrismLog.Editor.Window
 
                 logLine.Message = messageAttr.GetValueFromBag(bag, cc);
                 logLine.LogType = LogTypeAttr.GetValueFromBag(bag, cc);
-                logLine.Chanel = (short)ChanelAttr.GetValueFromBag(bag, cc);
+                logLine.Chanel = ChanelAttr.GetValueFromBag(bag, cc);
                 logLine.IsSelected = IsSelectedAttr.GetValueFromBag(bag, cc);
                 logLine.CollapsedCount = CollapsedCountAttr.GetValueFromBag(bag, cc);
             }
@@ -111,14 +111,14 @@ namespace PrismLog.Editor.Window
             icon.style.unityBackgroundImageTintColor = _settings.GetColorFromLogType(logType);
         }
 
-        private long _chanel = 0;
-        public long Chanel
+        private PrismLogChanel _chanel = PrismLogChanel.Default;
+        public PrismLogChanel Chanel
         {
             get => _chanel;
             set => SetChanel(value);
         }
 
-        private void SetChanel(long chanel)
+        private void SetChanel(PrismLogChanel chanel)
         {
             _chanel = chanel;
             icon.style.backgroundImage = _settings.GetChanelIcon(chanel);

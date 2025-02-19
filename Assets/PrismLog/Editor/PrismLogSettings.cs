@@ -31,27 +31,27 @@ namespace PrismLog.Editor.Settings
 
         [SerializeField] private EExceptionDisplayMode exceptionDisplayMode = EExceptionDisplayMode.CheckChanel | EExceptionDisplayMode.CheckLogType;
 
-        private Dictionary<long, LogChanelSettingChanel> chanelSettingsDict = null;
+        private Dictionary<PrismLogChanel, LogChanelSettingChanel> chanelSettingsDict = null;
 
         private void FillChanelSettingsDict()
         {
-            chanelSettingsDict = new Dictionary<long, LogChanelSettingChanel>();
+            chanelSettingsDict = new Dictionary<PrismLogChanel, LogChanelSettingChanel>();
 
             for (int i = 0; i < chanelSettings.Length; i++)
-                chanelSettingsDict.Add(Convert.ToInt64(i == 0 ? 0 : 1L << i), chanelSettings[i]);
+                chanelSettingsDict.Add(Enum.Parse<PrismLogChanel>(DEFAULT_CHANELS[i]), chanelSettings[i]);
         }
 
         #region GETTER
         public const string SETTINGS_PATH = "Assets/Plugins/PrismLog/Editor/PrismLogSettings.asset";
         private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
 
-        internal Texture2D GetChanelIcon(long chanelId)
+        internal Texture2D GetChanelIcon(PrismLogChanel chanel)
         {
-            if (chanelId == 1)
+            if (chanel == PrismLogChanel.Default)
                 return defaultIcon;
 
             if (chanelSettingsDict == null) FillChanelSettingsDict();
-            if (chanelSettingsDict.TryGetValue(chanelId, out LogChanelSettingChanel value))
+            if (chanelSettingsDict.TryGetValue(chanel, out LogChanelSettingChanel value))
                 return value.Icon;
             return defaultIcon;
         }

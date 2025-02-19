@@ -2,7 +2,8 @@
     "name": "PrismLog.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:d6cfea90129b31c4d863d3296e6f6b3b"
+        "PrismLog.Runtime",
+        "PrismLog.Generated"
     ],
     "includePlatforms": [
         "Editor"

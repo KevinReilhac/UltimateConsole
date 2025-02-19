@@ -16,13 +16,13 @@ namespace PrismLog
         };
 
         public string message;
-        public long chanel;
+        public PrismLogChanel chanel;
         public LogType logType;
         public object context;
         public List<StackFrame> stacktrace;
 
 
-        public PLog(string message, long chanel, LogType logType, object context)
+        public PLog(string message, PrismLogChanel chanel, LogType logType, object context)
         {
             this.message = message;
             this.chanel = chanel;
@@ -45,7 +45,7 @@ namespace PrismLog
                 //Exclude UltimateConsole classes from stacktrace
                 if (STACKTRACE_EXLUDE_CLASSNAME.Contains(declaringType.Name))
                     continue;
-                if (!string.IsNullOrEmpty(declaringType.Namespace) && declaringType.Namespace.Contains("UltimateConsole"))
+                if (!string.IsNullOrEmpty(declaringType.Namespace) && declaringType.Namespace.Contains("PrismLog"))
                     continue;
                 stackFrames.Add(frame);
             }

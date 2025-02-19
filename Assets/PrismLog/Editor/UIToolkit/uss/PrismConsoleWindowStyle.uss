@@ -68,3 +68,7 @@
     flex-grow: 0;
     flex-direction: row;
 }
+
+#ChanelsDropdown {
+    min-width: 200px;
+}

@@ -31,7 +31,9 @@ public class Tester : MonoBehaviour
     {
         LogType logTypeValue = (LogType)logTypeDropdown.value;
         string message = messageInputField.text;
-        PrismLogChanel chanelValue = (PrismLogChanel)(1 << chanelDropdown.value);
+
+        int chanelIndex = chanelDropdown.value;
+        PrismLogChanel chanelValue = (PrismLogChanel)(1 << chanelIndex);
 
         PConsole.Log(message, chanelValue, logTypeValue);
     }

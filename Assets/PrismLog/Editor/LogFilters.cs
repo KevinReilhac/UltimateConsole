@@ -32,8 +32,8 @@ namespace PrismLog
 
         public event Action OnLogFilterChanged;
 
-        private long _chanels = -1;
-        public long Chanels
+        private PrismLogChanel _chanels = PrismLogChanel.Default;
+        public PrismLogChanel Chanels
         {
             get => _chanels;
             set
@@ -120,8 +120,7 @@ namespace PrismLog
 
         private bool CheckChanel(PLog log)
         {
-            short logicAnd = (short)((int)log.chanel & (int)Chanels);
-            return logicAnd == log.chanel;
+            return Chanels.HasFlag(log.chanel);
         }
 
         private bool CheckSearchText(string message, out int startIndex, out int endIndex)
