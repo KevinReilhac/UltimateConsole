@@ -13,7 +13,7 @@ namespace PrismLog
         Network = 1 << 3,
         SaveSystem = 1 << 4,
         PlayerController = 1 << 5,
-        ProofThisIsDefault = 1 << 6,
+        GenerateYourOwnPrismLogChanel = 1 << 6,
     }
 }
 #endif
