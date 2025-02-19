@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/UI/UltimateConsoleWindowStyle.uss?fileID=7433441132597879392&amp;guid=f4f2a36fb9c405c4cbea73b118b43fc6&amp;type=3#UltimateConsoleWindowStyle" />
+    <Style src="project://database/Assets/Editor/UI/LogLineStyle.uss?fileID=7433441132597879392&amp;guid=c0f53a5a5137dcf4681ab9e0cda3e926&amp;type=3#LogLineStyle" />
+    <uie:Toolbar>
+        <uie:ToolbarButton text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClearButton" style="-unity-text-align: middle-center; min-width: 40px;" />
+        <uie:ToolbarToggle focusable="false" label="Collapse" name="CollapseToggle" style="-unity-text-align: upper-center; width: 64px; align-self: center; align-items: center;" />
+        <uie:ToolbarToggle focusable="false" label="Error Pause" name="ErrorPause" style="-unity-text-align: upper-center; width: 76px; align-self: center; align-items: center;" />
+        <uie:ToolbarSpacer style="flex-grow: 1;" />
+        <uie:ToolbarSearchField focusable="true" style="flex-grow: 0; flex-shrink: 1; width: 200px;" />
+        <uie:MaskField choices="Warning, Error, Default" value="-1" usage-hints="None" tooltip="Chanel Selection" name="ChanelsDropdown" style="min-width: 100px; flex-shrink: 0; flex-grow: 1; max-width: 150px;" />
+        <UltimateConsole.Editor.Window.LogTypesToggles />
+    </uie:Toolbar>
+    <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">
+        <ui:TwoPaneSplitView orientation="Horizontal" fixed-pane-initial-dimension="352" style="flex-direction: row; height: 100%;">
+            <ui:VisualElement name="DebugLines" style="flex-grow: 1;">
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="LogLineContainer" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:TwoPaneSplitView name="Details" orientation="Vertical" style="flex-grow: 1;">
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" style="flex-grow: 1;">
+                    <ui:Label tabindex="-1" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus volutpat sed augue sed congue. Phasellus et mauris finibus, volutpat libero eget, tempus lorem. Sed sed magna scelerisque ex rhoncus hendrerit id ut nibh. Nam sollicitudin orci mi, ut porttitor tortor aliquam eu. Etiam consectetur sed justo sit amet laoreet. Morbi in porta erat. Curabitur in tincidunt nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus." parse-escape-sequences="true" display-tooltip-when-elided="true" name="DetailsText" class="details-text" />
+                </ui:ScrollView>
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1">
+                    <ui:Label tabindex="-1" text="UnityEngine.StackTraceUtility:ExtractStackTrace ()&#10;StacktraceTest/&lt;&gt;c:&lt;Awake&gt;b__1_0 () (at ,size=15&gt;&lt;link&gt;&lt;color=#40a0ff&gt;&lt;u&gt;Assets/Scripts/StacktraceTest.cs:15&lt;/u&gt;&lt;/color&gt;&lt;/link&gt;)&#10;UnityEngine.Events.InvokableCall:Invoke ()&#10;UnityEngine.Events.UnityEvent:Invoke ()&#10;UnityEngine.UI.Button:Press () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs:70)&#10;UnityEngine.UI.Button:OnPointerClick (UnityEngine.EventSystems.PointerEventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs:114)&#10;UnityEngine.EventSystems.ExecuteEvents:Execute (UnityEngine.EventSystems.IPointerClickHandler,UnityEngine.EventSystems.BaseEventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:57)&#10;UnityEngine.EventSystems.ExecuteEvents:Execute&lt;UnityEngine.EventSystems.IPointerClickHandler&gt; (UnityEngine.GameObject,UnityEngine.EventSystems.BaseEventData,UnityEngine.EventSystems.ExecuteEvents/EventFunction`1&lt;UnityEngine.EventSystems.IPointerClickHandler&gt;) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)&#10;UnityEngine.EventSystems.StandaloneInputModule:ReleaseMouse (UnityEngine.EventSystems.PointerEventData,UnityEngine.GameObject) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/StandaloneInputModule.cs:192)&#10;UnityEngine.EventSystems.StandaloneInputModule:ProcessMousePress (UnityEngine.EventSystems.PointerInputModule/MouseButtonEventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/StandaloneInputModule.cs:654)&#10;UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent (int) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/StandaloneInputModule.cs:554)&#10;UnityEngine.EventSystems.StandaloneInputModule:ProcessMouseEvent () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/StandaloneInputModule.cs:534)&#10;UnityEngine.EventSystems.StandaloneInputModule:Process () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/InputModules/StandaloneInputModule.cs:282)&#10;UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)" parse-escape-sequences="false" display-tooltip-when-elided="true" name="StackTraceText" focusable="true" class="details-text" />
+                </ui:ScrollView>
+            </ui:TwoPaneSplitView>
+        </ui:TwoPaneSplitView>
+    </ui:VisualElement>
+</ui:UXML>

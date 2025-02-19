@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/UI/LogLineStyle.uss?fileID=7433441132597879392&amp;guid=c0f53a5a5137dcf4681ab9e0cda3e926&amp;type=3#LogLineStyle" />
+    <ui:VisualElement name="Line" usage-hints="None" class="log-line">
+        <ui:VisualElement name="Icon" class="log-line-icon" />
+        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="true" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus volutpat sed augue sed congue. Phasellus et mauris finibus, volutpat libero eget, tempus lorem. Sed sed magna scelerisque ex rhoncus hendrerit id ut nibh. Nam sollicitudin orci mi, ut porttitor tortor aliquam eu. Etiam consectetur sed justo sit amet laoreet. Morbi in porta erat. Curabitur in tincidunt nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus." name="Text" class="log-line-message" />
+        <ui:VisualElement name="CollapsedCount" class="log-line-collapsed-count-container">
+            <ui:Label tabindex="-1" text="1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CountLabel" class="log-line-collapsed-count-label" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
