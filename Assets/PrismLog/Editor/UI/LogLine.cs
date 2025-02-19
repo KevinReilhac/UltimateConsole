@@ -9,6 +9,15 @@ namespace PrismLog.Editor.Window
 {
     internal class LogLine : VisualElement
     {
+        private Dictionary<LogType, string> logTypeClassDict = new Dictionary<LogType, string>()
+        {
+            { LogType.Log, "log-line-log" },
+            { LogType.Warning, "log-line-warning" },
+            { LogType.Error, "log-line-error" },
+            { LogType.Exception, "log-line-error" },
+            { LogType.Assert, "log-line-error" },
+        };
+
         public static event Action<LogLine> OnLogLineSelected = null;
         public static event Action<LogLine> OnLogLineDoubleClicked = null;
 
@@ -108,7 +117,20 @@ namespace PrismLog.Editor.Window
         private void SetLogType(LogType logType)
         {
             _logType = logType;
-            icon.style.unityBackgroundImageTintColor = _settings.GetColorFromLogType(logType);
+            SetLogTypeClass();
+        }
+
+        private void SetLogTypeClass()
+        {
+            bool isError = _logType == LogType.Error || _logType == LogType.Exception || _logType == LogType.Assert;
+            LogType logType = isError ? LogType.Error : _logType;
+
+            foreach (var logTypeClass in logTypeClassDict)
+            {
+                if (logTypeClass.Key == LogType.Exception || logTypeClass.Key == LogType.Assert)
+                    continue;
+                this.EnableInClassList(logTypeClass.Value, logTypeClass.Key == logType);
+            }
         }
 
         private PrismLogChanel _chanel = PrismLogChanel.Default;
