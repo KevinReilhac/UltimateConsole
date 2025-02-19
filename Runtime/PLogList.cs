@@ -29,5 +29,8 @@ namespace PrismLog
             logs.Add(log);
             onAddLine?.Invoke(log);
         }
+
+        public int LogCount => logs.Count;
+        public PLog this[int index] => logs[index];
     }
 }

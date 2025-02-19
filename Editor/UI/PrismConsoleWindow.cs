@@ -227,10 +227,16 @@ namespace PrismLog.Editor.Window
             RegisterStackTraceTextLinks(stackTraceText);
 
             logFilters.UpdateLogTypes(PrismConsoleWindowPrefs.GetEnabledLogTypes());
-
+            AddLogsFromLogList();
             Refresh();
         }
 
+        private void AddLogsFromLogList()
+        {
+            PLogList logList = PConsole.GetLogList();
+            for (int i = 0; i < logList.LogCount; i++)
+                OnNewLog(logList[i]);
+        }
 
         private void SetLogTypes(List<LogType> list)
         {
