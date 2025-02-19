@@ -25,10 +25,6 @@ namespace PrismLog.Editor.Settings
 
         [SerializeField] internal LogChanelSettingChanel[] chanelSettings;
         [SerializeField] internal Texture2D defaultIcon;
-        [SerializeField] private Color defaultColor = Color.white;
-        [SerializeField] private Color warningColor = Color.yellow;
-        [SerializeField] private Color errorColor = Color.red;
-
         [SerializeField] private EExceptionDisplayMode exceptionDisplayMode = EExceptionDisplayMode.CheckChanel | EExceptionDisplayMode.CheckLogType;
 
         private Dictionary<PrismLogChanel, LogChanelSettingChanel> chanelSettingsDict = null;
@@ -101,19 +97,6 @@ namespace PrismLog.Editor.Settings
             get => exceptionDisplayMode;
         }
 
-        public Color GetColorFromLogType(LogType logType)
-        {
-            switch (logType)
-            {
-                case LogType.Exception:
-                case LogType.Error:
-                    return errorColor;
-                case LogType.Warning:
-                    return warningColor;
-                default:
-                    return defaultColor;
-            }
-        }
         #endregion
     }
 }

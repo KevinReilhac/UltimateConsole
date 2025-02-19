@@ -63,3 +63,11 @@
     padding-bottom: 0;
     padding-left: 0;
 }
+
+.log-line-warning #icon {
+    -unity-background-image-tint-color: var(--unity-colors-warning-text);
+}
+
+.log-line-error #icon {
+    -unity-background-image-tint-color: var(--unity-colors-error-text);
+}
