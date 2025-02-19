@@ -27,6 +27,8 @@ namespace PrismLog
             logList.onRemoveLine -= logHandler.OnRemoveLog;
         }
 
+        internal static PLogList GetLogList() => logList;
+
         public static void Log(string message, PrismLogChanel chanel = PrismLogChanel.Default, LogType logType = LogType.Log, object context = null)
         {
             PLog newLogLine = new PLog(message, chanel, logType, context);
