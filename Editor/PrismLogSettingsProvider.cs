@@ -34,20 +34,11 @@ namespace PrismLog.Editor.Settings
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button(EditorGUIUtility.IconContent("d_RotateTool On", "Generate"), GUILayout.Width(200f), GUILayout.Height(50f)))
+            if (GUILayout.Button("Generate Chanels Enum", GUILayout.Width(200f), GUILayout.Height(50f)))
                 PrismLogChanelsGenerator.Generate();
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
             GUI.enabled = true;
-
-            //LogTypes Color
-            HorizontalLine();
-            EditorGUILayout.Space();
-            DrawTitle("LogTypes Color");
-            EditorGUILayout.PropertyField(settings.FindProperty("defaultColor"));
-            EditorGUILayout.PropertyField(settings.FindProperty("warningColor"));
-            EditorGUILayout.PropertyField(settings.FindProperty("errorColor"));
-            settings.ApplyModifiedProperties();
 
             //Other Settings
             HorizontalLine();
