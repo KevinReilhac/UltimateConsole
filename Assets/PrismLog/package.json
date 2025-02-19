@@ -1,8 +1,8 @@
 {
     "name": "com.kebab.prism_log",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "displayName": "PrismLog",
-    "description": "This is generic save file system",
+    "description": "LogConsole with chanels",
     "unity": "2019.1",
     "unityRelease": "0b5",
     "documentationUrl": "https://kevinreilhac.github.io/PrismLog/",
@@ -10,11 +10,21 @@
 
     "licensesUrl": "",
     "dependencies": {},
-   "keywords": [
+    "keywords": [
+        "log",
+        "console",
+        "chanel"
     ],
     "author": {
-      "name": "Kevin \"Kebab\" Reilhac",
-      "email": "kevin.reilhac.pro@gmail.com",
-      "url": "https://github.com/KevinReilhac"
-    }
+        "name": "Kevin \"Kebab\" Reilhac",
+        "email": "kevin.reilhac.pro@gmail.com",
+        "url": "https://github.com/KevinReilhac"
+    },
+    "samples": [
+        {
+            "displayName": "PrismConsoleTester",
+            "description": "Sample for PrismConsole",
+            "path": "Samples/PrismConsoleTester"
+        }
+    ]
 }
