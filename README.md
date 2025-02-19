@@ -1,7 +1,7 @@
 # PrismLog
-LogConsole with chanels
+Log console with chanels
+![image](https://github.com/user-attachments/assets/7a109f95-9f01-4df3-a725-21a203e9524e)
 
-[//]: # (TODO: Add a gif of the console)
 
 
 ## Authors
@@ -11,26 +11,18 @@ LogConsole with chanels
 ## Installation
 
 Install PrismLog with Unity Package Manager
-
-[//]: # (TODO: Replace install gif)
-![pkgmngr](https://github.com/user-attachments/assets/7165bb65-8738-4d3c-9c2a-fb31acae2e56)
-
-
+![prismLog](https://github.com/user-attachments/assets/86d57b2d-93cb-4b94-bdd6-15763d17bbe6)
 ```bash
   https://github.com/KevinReilhac/PrismLog.git#upm
 ```
 
 ## Initalization
 
-- Setup your chanels in your project settings.
-[//]: # (TODO: Add a gif of the chanels)
+- Setup your chanels in your project settings and generate your enum.
+![image](https://github.com/user-attachments/assets/21ac0ab1-9600-4294-b79b-1162d54ca340)
 
-- Generate your enum
-[//]: # (TODO: Add a generate enum gif)
-
-- Open Open Prism Log Console `Alt + Shift + C`
-[//]: # (TODO: Add a open console gif)
-
+- Open Open Prism Log Console `Shift + Alt + C`
+![image](https://github.com/user-attachments/assets/9c77e476-0e06-4785-bbdc-52a4deb6b2e0)
 
 ## Usage
 ```csharp
@@ -38,7 +30,7 @@ PConsole.Log("Default Log"); //Print a log in the default chanel
 PConsole.LogWarning("UI LogWarning", PrismLogChanel.UI); //Print a warning in the UI chanel
 PConsole.LogError("AI LogError", PrismLogChanel.AI); //Print an error in the AI chanel
 
-//You can also use a logtype as thrid parameter
+//You can also use a logtype as third parameter
 PConsole.Log("Default Log", PrismLogChanel.PlayerController, LogType.Warning); //Print a warning in the PlayerController chanel
 ```
 
