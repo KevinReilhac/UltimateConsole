@@ -17,7 +17,6 @@ namespace PrismLog.Editor.Window
     internal class PrismConsoleWindow : EditorWindow, IPLogHandler
     {
         [SerializeField] private VisualTreeAsset VisualTreeAsset = default;
-        [SerializeField] private StyleSheet StyleSheet = default;
 
         private VisualElement logLinesContainer = null;
         private LogLine currentSelectedLogLine = null;
@@ -190,17 +189,15 @@ namespace PrismLog.Editor.Window
 
             // Instantiate UXML
             VisualTreeAsset.CloneTree(root);
-            root.styleSheets.Add(StyleSheet);
 
             stackTraceText = root.Q<Label>("StackTraceText");
             stackTraceText.text = string.Empty;
             logLinesContainer = root.Q<ScrollView>("LogLineContainer").contentContainer;
             logLinesContainer.Clear();
 
-            MaskField chanelsDropDown = root.Q<MaskField>("ChanelsDropdown");
-            chanelsDropDown.choices = settings.chanelSettings.Select(s => s.Name).ToList();
+            EnumFlagsField chanelsDropDown = root.Q<EnumFlagsField>("ChanelsDropdown");
             chanelsDropDown.RegisterValueChangedCallback(OnChanelsChange);
-            chanelsDropDown.value = PrismConsoleWindowPrefs.Chanels;
+            chanelsDropDown.value = (PrismLogChanel)PrismConsoleWindowPrefs.Chanels;
             detailsText = root.Q<Label>("DetailsText");
             detailsText.text = string.Empty;
 
@@ -224,13 +221,13 @@ namespace PrismLog.Editor.Window
             ToolbarToggle pauseOnErrorToggle = root.Q<ToolbarToggle>("ErrorPause");
             pauseOnErrorToggle.RegisterCallback<ChangeEvent<bool>>(OnPauseOnErrorToggleChange);
             pauseOnErrorToggle.value = PrismConsoleWindowPrefs.ErrorPauseEnabled;
-            SetupDropdownFields(chanelsDropDown);
             RegisterStackTraceTextLinks(stackTraceText);
 
             logFilters.UpdateLogTypes(PrismConsoleWindowPrefs.GetEnabledLogTypes());
 
             Refresh();
         }
+
 
         private void SetLogTypes(List<LogType> list)
         {
@@ -241,10 +238,11 @@ namespace PrismLog.Editor.Window
 
         #region UI_CALLBACKS
 
-        private void OnChanelsChange(ChangeEvent<int> evt)
+        private void OnChanelsChange(ChangeEvent<Enum> evt)
         {
-            logFilters.Chanels = evt.newValue;
-            PrismConsoleWindowPrefs.Chanels = evt.newValue;
+            PrismLogChanel chanel = (PrismLogChanel)evt.newValue;
+            logFilters.Chanels = chanel;
+            PrismConsoleWindowPrefs.Chanels = (int)chanel;
         }
 
         private void OnSearchFieldChange(ChangeEvent<string> evt)
@@ -266,14 +264,6 @@ namespace PrismLog.Editor.Window
         }
 
         #endregion
-
-        private void SetupDropdownFields(MaskField chanelsDropdown)
-        {
-            List<string> enumNames = new List<string>() { "Default" };
-            enumNames.AddRange(settings.chanelSettings.Select(s => s.Name));
-
-            chanelsDropdown.choices = enumNames;
-        }
 
         private LogLine CreateLine(PLog log)
         {
@@ -370,7 +360,7 @@ namespace PrismLog.Editor.Window
             if (logString.StartsWith(PConsole.DEFAULT_CONSOLE_LOG_START))
                 return;
 
-            PLog log = new PLog(logString, 1, type, null);
+            PLog log = new PLog(logString, PrismLogChanel.Default, type, null);
 
             OnNewLog(log);
         }

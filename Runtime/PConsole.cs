@@ -29,9 +29,7 @@ namespace PrismLog
 
         public static void Log(string message, PrismLogChanel chanel = PrismLogChanel.Default, LogType logType = LogType.Log, object context = null)
         {
-            long chanelValue = 1;
-
-            PLog newLogLine = new PLog(message, chanelValue, logType, context);
+            PLog newLogLine = new PLog(message, chanel, logType, context);
             string chanelName = chanel != PrismLogChanel.Default ? chanel.ToString() : "Default";
 
             string defaultConsoleLogLine = string.Format(DEFAULT_CONSOLE_LOG_FORMAT, chanelName, newLogLine.message);

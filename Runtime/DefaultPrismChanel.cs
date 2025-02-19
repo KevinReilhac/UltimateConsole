@@ -7,13 +7,13 @@ namespace PrismLog
     [Flags]
     public enum PrismLogChanel : long
     {
-        Default = 0,
-        UI = 1 << 0,
-        AI = 1 << 1,
-        Network = 1 << 2,
-        SaveSystem = 1 << 3,
-        PlayerController = 1 << 4,
-        ProofThisIsDefault = 1 << 5,
+        Default = 1,
+        UI = 1 << 1,
+        AI = 1 << 2,
+        Network = 1 << 3,
+        SaveSystem = 1 << 4,
+        PlayerController = 1 << 5,
+        ProofThisIsDefault = 1 << 6,
     }
 }
 #endif
