@@ -1,7 +1,9 @@
 {
     "name": "PrismLog.Runtime",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "PrismLog.Generated"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

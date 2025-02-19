@@ -14,10 +14,10 @@ namespace PrismLog.Editor.Settings
         [SettingsProvider]
         public static SettingsProvider CreateSettingsProvider()
         {
-            SettingsProvider provider = new SettingsProvider("Project/Ultimate Console", SettingsScope.Project)
+            SettingsProvider provider = new SettingsProvider("Project/PrismLog", SettingsScope.Project)
             {
                 guiHandler = Drawer,
-                keywords = new HashSet<string>(new[] { "Ultimate", "Console", "Chanel" })
+                keywords = new HashSet<string>(new[] { "Prism", "Log", "Chanel" })
             };
 
             return provider;
