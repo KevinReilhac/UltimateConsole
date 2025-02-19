@@ -27,13 +27,12 @@ namespace PrismLog
             logList.onRemoveLine -= logHandler.OnRemoveLog;
         }
 
-        public static void Log(string message, IConvertible chanel = null, LogType logType = LogType.Log, object context = null)
+        public static void Log(string message, PrismLogChanel chanel = PrismLogChanel.Default, LogType logType = LogType.Log, object context = null)
         {
             long chanelValue = 1;
-            if (chanel != null)
-                chanelValue = Convert.ToInt64(chanel);
+
             PLog newLogLine = new PLog(message, chanelValue, logType, context);
-            string chanelName = chanel != null ? chanel.ToString() : "Default";
+            string chanelName = chanel != PrismLogChanel.Default ? chanel.ToString() : "Default";
 
             string defaultConsoleLogLine = string.Format(DEFAULT_CONSOLE_LOG_FORMAT, chanelName, newLogLine.message);
 
@@ -53,29 +52,29 @@ namespace PrismLog
             logList.AddLine(newLogLine);
         }
 
-        public static void LogFormat(string format, IConvertible chanel = null, LogType logType = LogType.Log, object context = null, params object[] args)
+        public static void LogFormat(string format, PrismLogChanel chanel = PrismLogChanel.Default, LogType logType = LogType.Log, object context = null, params object[] args)
         {
             string message = string.Format(format, args);
 
             Log(message, chanel, logType, context);
         }
 
-        public static void LogWarning(string message, IConvertible chanel = null, object context = null)
+        public static void LogWarning(string message, PrismLogChanel chanel = PrismLogChanel.Default, object context = null)
         {
             Log(message, chanel, LogType.Warning, context);
         }
 
-        public static void LogWarningFormat(string format, IConvertible chanel = null, object context = null, params object[] args)
+        public static void LogWarningFormat(string format, PrismLogChanel chanel = PrismLogChanel.Default, object context = null, params object[] args)
         {
             LogFormat(format, chanel, LogType.Warning, context, args);
         }
 
-        public static void LogError(string message, IConvertible chanel = null, object context = null)
+        public static void LogError(string message, PrismLogChanel chanel = PrismLogChanel.Default, object context = null)
         {
             Log(message, chanel, LogType.Error, context);
         }
 
-        public static void LogErrorFormat(string format, IConvertible chanel = null, object context = null, params object[] args)
+        public static void LogErrorFormat(string format, PrismLogChanel chanel = PrismLogChanel.Default, object context = null, params object[] args)
         {
             LogFormat(format, chanel, LogType.Error, context, args);
         }

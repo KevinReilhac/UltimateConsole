@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("PrismLog.Editor")]
 namespace PrismLog
 {
     internal interface IPLogHandler

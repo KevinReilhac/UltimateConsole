@@ -1,6 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/Editor/UI/UltimateConsoleWindowStyle.uss?fileID=7433441132597879392&amp;guid=f4f2a36fb9c405c4cbea73b118b43fc6&amp;type=3#UltimateConsoleWindowStyle" />
-    <Style src="project://database/Assets/Editor/UI/LogLineStyle.uss?fileID=7433441132597879392&amp;guid=c0f53a5a5137dcf4681ab9e0cda3e926&amp;type=3#LogLineStyle" />
+    <Style src="project://database/Assets/PrismLog/Editor/UIToolkit/uxml/PrismConsoleWindowStyle.uss?fileID=7433441132597879392&amp;guid=f4f2a36fb9c405c4cbea73b118b43fc6&amp;type=3#PrismConsoleWindowStyle" />
     <uie:Toolbar>
         <uie:ToolbarButton text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClearButton" style="-unity-text-align: middle-center; min-width: 40px;" />
         <uie:ToolbarToggle focusable="false" label="Collapse" name="CollapseToggle" style="-unity-text-align: upper-center; width: 64px; align-self: center; align-items: center;" />
@@ -8,7 +7,7 @@
         <uie:ToolbarSpacer style="flex-grow: 1;" />
         <uie:ToolbarSearchField focusable="true" style="flex-grow: 0; flex-shrink: 1; width: 200px;" />
         <uie:MaskField choices="Warning, Error, Default" value="-1" usage-hints="None" tooltip="Chanel Selection" name="ChanelsDropdown" style="min-width: 100px; flex-shrink: 0; flex-grow: 1; max-width: 150px;" />
-        <UltimateConsole.Editor.Window.LogTypesToggles />
+        <PrismLog.Editor.Window.LogTypesToggles />
     </uie:Toolbar>
     <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">
         <ui:TwoPaneSplitView orientation="Horizontal" fixed-pane-initial-dimension="352" style="flex-direction: row; height: 100%;">

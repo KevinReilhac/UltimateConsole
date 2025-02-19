@@ -17,7 +17,7 @@ namespace PrismLog.Editor.Window
     internal class PrismConsoleWindow : EditorWindow, IPLogHandler
     {
         [SerializeField] private VisualTreeAsset VisualTreeAsset = default;
-        [SerializeField] private VisualTreeAsset debugLineTemplate;
+        [SerializeField] private StyleSheet StyleSheet = default;
 
         private VisualElement logLinesContainer = null;
         private LogLine currentSelectedLogLine = null;
@@ -154,12 +154,17 @@ namespace PrismLog.Editor.Window
             string columnNumberStr = match.Groups[2].Value;
             fullPath = fullPath.Substring(0, fullPath.IndexOf("("));
 
-            if (int.TryParse(lineNumberStr, out int lineNumber))
-            {
-                InternalEditorUtility.OpenFileAtLineExternal(fullPath, lineNumber);
-                return true;
-            }
-            return false;
+            int lineNumber = 0;
+            int columnNumber = 0;
+
+            if (int.TryParse(lineNumberStr, out int tmpLineNumber))
+                lineNumber = tmpLineNumber;
+
+            if (int.TryParse(columnNumberStr, out int tmpColumnNumber))
+                columnNumber = tmpColumnNumber;
+
+            InternalEditorUtility.OpenFileAtLineExternal(fullPath, lineNumber, columnNumber);
+            return true;
         }
 
         private void UpdateDetailsText(LogLine logLine)
@@ -185,6 +190,7 @@ namespace PrismLog.Editor.Window
 
             // Instantiate UXML
             VisualTreeAsset.CloneTree(root);
+            root.styleSheets.Add(StyleSheet);
 
             stackTraceText = root.Q<Label>("StackTraceText");
             stackTraceText.text = string.Empty;
@@ -416,6 +422,5 @@ namespace PrismLog.Editor.Window
 
         }
         #endregion
-
     }
 }

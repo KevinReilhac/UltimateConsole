@@ -8,6 +8,14 @@ namespace PrismLog.Editor.Settings
 {
     public class PrismLogSettings : ScriptableObject
     {
+        private static readonly string[] DEFAULT_CHANELS = new string[] {
+            "UI",
+            "AI",
+            "Network",
+            "SaveSystem",
+            "PlayerController"
+        };
+
         [Flags]
         public enum EExceptionDisplayMode
         {
@@ -54,13 +62,13 @@ namespace PrismLog.Editor.Settings
             if (settings == null)
             {
                 settings = CreateInstance<PrismLogSettings>();
+                settings.chanelSettings = new LogChanelSettingChanel[DEFAULT_CHANELS.Length];
 
                 //Settings default value
-                settings.chanelSettings = new LogChanelSettingChanel[] {
-                    new LogChanelSettingChanel("UI"),
-                    new LogChanelSettingChanel("AI"),
-                    new LogChanelSettingChanel("Network"),
-                };
+                for (int i = 0; i < DEFAULT_CHANELS.Length; i++)
+                {
+                    settings.chanelSettings[i] = new LogChanelSettingChanel(DEFAULT_CHANELS[i], GetChanelIcon(DEFAULT_CHANELS[i]));
+                }
 
                 settings.defaultIcon = EditorGUIUtility.IconContent("console.infoicon.sml").image as Texture2D;
 
@@ -71,6 +79,16 @@ namespace PrismLog.Editor.Settings
             }
 
             return settings;
+        }
+
+        private static Texture2D GetChanelIcon(string chanelName)
+        {
+            string iconName = string.Format("{0}-chanel-icon", chanelName.ToLower());
+
+            string[] assets = AssetDatabase.FindAssets($"{iconName} t:texture2D");
+            if (assets.Length > 0)
+                return AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(assets[0]));
+            return null;
         }
 
         internal static SerializedObject GetSerializedSettings()
