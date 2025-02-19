@@ -11,16 +11,16 @@ namespace PrismLog
         public const string DEFAULT_CONSOLE_LOG_START = "ULog";
         private const string DEFAULT_CONSOLE_LOG_FORMAT = DEFAULT_CONSOLE_LOG_START + "({0}) : {1}";
 
-        public static PLogList logList = new PLogList();
+        internal static PLogList logList = new PLogList();
 
-        public static void RegisterLogHandler(IPLogHandler logHandler)
+        internal static void RegisterLogHandler(IPLogHandler logHandler)
         {
             logList.onAddLine += logHandler.OnNewLog;
             logList.onClear += logHandler.OnClearLogs;
             logList.onRemoveLine += logHandler.OnRemoveLog;
         }
 
-        public static void UnRegisterLogHandler(IPLogHandler logHandler)
+        internal static void UnRegisterLogHandler(IPLogHandler logHandler)
         {
             logList.onAddLine -= logHandler.OnNewLog;
             logList.onClear -= logHandler.OnClearLogs;

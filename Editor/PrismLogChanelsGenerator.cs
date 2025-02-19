@@ -18,7 +18,7 @@ namespace PrismLog.Editor
 
         public const string ENUM_NAME = "ELogChanels";
 
-        private static readonly string PATH = $"Plugins/PrismLogger/Runtime/{ENUM_NAME}.cs";
+        private static readonly string PATH = $"Plugins/PrismLog/Runtime/{ENUM_NAME}.cs";
 
         public static void Generate()
         {

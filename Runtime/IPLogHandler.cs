@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("PrismLog.Editor")]
 namespace PrismLog
 {
-    public interface IPLogHandler
+    internal interface IPLogHandler
     {
         void OnNewLog(PLog log);
         void OnRemoveLog(PLog log);

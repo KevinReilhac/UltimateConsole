@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 namespace PrismLog
 {
-    public class PLogList
+    internal class PLogList
     {
         private const int MAX_SIZE = 100;
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PrismLog
 {
-    public class LogFilters
+    internal class LogFilters
     {
         private PrismLogSettings Settings => PrismLogSettings.GetOrCreateSettings();
 
