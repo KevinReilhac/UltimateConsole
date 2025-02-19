@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UltimateConsole;
+using PrismLog;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,14 +14,14 @@ public class StacktraceTest : MonoBehaviour
     {
         btnTemplate.gameObject.SetActive(false);
 
-        CreateButton("PlayerController Log Warning", () =>
+        CreateButton("UI Log Warning", () =>
         {
-            UConsole.LogWarning("Log Warning", ELogChanels.PlayerController);
+            PConsole.LogWarning("Log Warning", ELogChanels.UI);
         });
 
         CreateButton("AI Log Error", () =>
         {
-            UConsole.LogError("Log Error", ELogChanels.AI, LogType.Error);
+            PConsole.LogError("Log Error", ELogChanels.AI, LogType.Error);
         });
 
         CreateButton("Unity default Log", () =>
@@ -36,7 +36,7 @@ public class StacktraceTest : MonoBehaviour
 
         CreateButton("Context Log", () =>
         {
-            UConsole.Log("Log", ELogChanels.Default, context: this);
+            PConsole.Log("Log", ELogChanels.Default, context: this);
         });
 
         CreateButton("Exception Log", () =>
@@ -47,11 +47,6 @@ public class StacktraceTest : MonoBehaviour
         CreateButton("Assert Log", () =>
         {
             Debug.Assert(false, "Assert log message");
-        });
-
-        CreateButton("Saucisse !!!!", () =>
-        {
-            UConsole.Log("SAUCISSES", ELogChanels.SAUCISSES);
         });
 
     }

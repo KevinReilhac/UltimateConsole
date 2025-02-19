@@ -1,0 +1,18 @@
+{
+    "name": "PrismLog.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d6cfea90129b31c4d863d3296e6f6b3b"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
