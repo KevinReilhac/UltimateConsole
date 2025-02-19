@@ -24,7 +24,7 @@
         {
             "displayName": "PrismConsoleTester",
             "description": "Sample for PrismConsole",
-            "path": "Samples/PrismConsoleTester"
+            "path": "Samples~/PrismConsoleTester"
         }
     ]
 }
