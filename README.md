@@ -1,5 +1,7 @@
 # PrismLog
 Log console with chanels
+
+
 ![image](https://github.com/user-attachments/assets/7a109f95-9f01-4df3-a725-21a203e9524e)
 
 
@@ -19,9 +21,11 @@ Install PrismLog with Unity Package Manager
 ## Initalization
 
 - Setup your chanels in your project settings and generate your enum.
+
 ![image](https://github.com/user-attachments/assets/21ac0ab1-9600-4294-b79b-1162d54ca340)
 
 - Open Open Prism Log Console `Shift + Alt + C`
+
 ![image](https://github.com/user-attachments/assets/9c77e476-0e06-4785-bbdc-52a4deb6b2e0)
 
 ## Usage
