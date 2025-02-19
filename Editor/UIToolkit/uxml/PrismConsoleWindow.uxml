@@ -7,7 +7,7 @@
         <uie:ToolbarToggle focusable="false" label="Error Pause" name="ErrorPause" style="-unity-text-align: upper-center; width: 76px; align-self: center; align-items: center;" />
         <uie:ToolbarSpacer style="flex-grow: 1;" />
         <uie:ToolbarSearchField focusable="true" style="flex-grow: 0; flex-shrink: 1; width: 200px;" />
-        <uie:EnumFlagsField type="PrismLog.PrismLogChanel, PrismLog.Generated" name="ChanelsDropdown" />
+        <uie:EnumFlagsField name="ChanelsDropdown" />
         <PrismLog.Editor.Window.LogTypesToggles />
     </uie:Toolbar>
     <ui:VisualElement style="flex-grow: 1; flex-direction: column; flex-wrap: nowrap; height: 100%;">

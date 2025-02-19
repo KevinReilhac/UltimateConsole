@@ -199,6 +199,8 @@ namespace PrismLog.Editor.Window
             logLinesContainer.Clear();
 
             EnumFlagsField chanelsDropDown = root.Q<EnumFlagsField>("ChanelsDropdown");
+            chanelsDropDown.Init(PrismLogChanel.Default, true);
+            chanelsDropDown.value = (PrismLogChanel)(-1);
             chanelsDropDown.RegisterValueChangedCallback(OnChanelsChange);
             chanelsDropDown.value = (PrismLogChanel)PrismConsoleWindowPrefs.Chanels;
             detailsText = root.Q<Label>("DetailsText");
