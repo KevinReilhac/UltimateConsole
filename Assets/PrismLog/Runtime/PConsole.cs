@@ -8,7 +8,7 @@ namespace PrismLog
 {
     public static class PConsole
     {
-        public const string DEFAULT_CONSOLE_LOG_START = "ULog";
+        public const string DEFAULT_CONSOLE_LOG_START = "◭";
         private const string DEFAULT_CONSOLE_LOG_FORMAT = DEFAULT_CONSOLE_LOG_START + "({0}) : {1}";
 
         internal static PLogList logList = new PLogList();
