@@ -49,16 +49,24 @@ public class StacktraceTest : MonoBehaviour
             Debug.Assert(false, "Assert log message");
         });
 
+        CreateButton("Saucisse !!!!", () =>
+        {
+            UConsole.Log("SAUCISSES", ELogChanels.SAUCISSES);
+        });
+
     }
 
     private void CreateButton(string text, Action onClick)
-
     {
         Button btn = Instantiate(btnTemplate, btnTemplate.transform.parent);
         btn.gameObject.SetActive(true);
         btn.GetComponentInChildren<TextMeshProUGUI>().text = text;
         btn.onClick.AddListener(() => onClick());
+    }
 
+    private void OnGUI()
+    {
+        GUILayout.Label("SAUCISSES");
     }
 
 }

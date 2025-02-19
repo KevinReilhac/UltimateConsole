@@ -315,7 +315,7 @@ namespace UltimateConsole.Editor.Window
 
         private string GetFrameText(StackFrame frame, int stacktraceIndex)
         {
-            string linkText = string.Format("{0}({1},{2})", frame.GetFileName(), frame.GetFileLineNumber(), frame.GetFileColumnNumber());
+            string linkText = string.Format("{0}|{1}|{2}", frame.GetFileName(), frame.GetFileLineNumber(), frame.GetFileColumnNumber());
             string fileName = frame.GetFileName();
 
             StringBuilder frameText = new StringBuilder();
@@ -339,7 +339,7 @@ namespace UltimateConsole.Editor.Window
 
         private void StackTraceHyperLinkUp(PointerUpLinkTagEvent evt)
         {
-            string[] splited = evt.linkID.Split(',');
+            string[] splited = evt.linkID.Split('|');
             string fileName = splited[0];
             int lineNumber = 0;
             int columnNumber = 0;

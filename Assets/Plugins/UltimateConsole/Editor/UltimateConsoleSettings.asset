@@ -23,8 +23,10 @@ MonoBehaviour:
     icon: {fileID: 2800000, guid: d4ed85bbaa421f047b184b6e64bf80d7, type: 3}
   - name: SceneManagement
     icon: {fileID: 2800000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
+  - name: SAUCISSES
+    icon: {fileID: -2236324273849735119, guid: 48101a6abaf4be54fbf49440383907e0, type: 3}
   defaultIcon: {fileID: 2346436936791262179, guid: 48101a6abaf4be54fbf49440383907e0, type: 3}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   warningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   errorColor: {r: 1, g: 0, b: 0, a: 1}
-  exceptionDisplayMode: -1
+  exceptionDisplayMode: 2

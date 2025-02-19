@@ -4,7 +4,7 @@ using System;
 namespace UltimateConsole
 {
     [Flags]
-    public enum ELogChanels : long
+    public enum ELogChanels : short
     {
         Default = 1,
         UI = 2,
@@ -12,5 +12,7 @@ namespace UltimateConsole
         Network = 8,
         PlayerController = 16,
         SceneManagement = 32,
+        SAUCISSES = 64,
+
     }
 }
