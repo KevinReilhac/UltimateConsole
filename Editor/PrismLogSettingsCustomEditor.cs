@@ -8,9 +8,9 @@ namespace PrismLog.Editor.Settings
     {
         public override void OnInspectorGUI()
         {
-            if (GUILayout.Button("Open in project Settings"))
+            if (GUILayout.Button("Open PrismLog in project Settings"))
             {
-                SettingsService.OpenProjectSettings("Project/PrismLog");
+                SettingsService.OpenProjectSettings("Project/Prism Log");
             }
         }
 

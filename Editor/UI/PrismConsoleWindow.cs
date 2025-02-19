@@ -17,6 +17,7 @@ namespace PrismLog.Editor.Window
     internal class PrismConsoleWindow : EditorWindow, IPLogHandler
     {
         [SerializeField] private VisualTreeAsset VisualTreeAsset = default;
+        [SerializeField] private Texture Icon = default;
 
         private VisualElement logLinesContainer = null;
         private LogLine currentSelectedLogLine = null;
@@ -32,11 +33,10 @@ namespace PrismLog.Editor.Window
 
         private const string PARENTHESIS_FORMAT_PATTERN = @"Assets[/\\][^()]+\.cs\((\d+),(\d+)\)";
 
-        [MenuItem("Window/UI Toolkit/UltimateConsoleWindow")]
+        [MenuItem("Window/General/◭ Console #&c")]
         public static void ShowExample()
         {
             PrismConsoleWindow wnd = GetWindow<PrismConsoleWindow>();
-            wnd.titleContent = new GUIContent("Ultimate Console");
         }
 
         private void OnEnable()
@@ -184,6 +184,9 @@ namespace PrismLog.Editor.Window
 
         public void CreateGUI()
         {
+            // Set window icon
+            this.titleContent = new GUIContent(" Console", Icon);
+
             // Each editor window contains a root VisualElement object
             VisualElement root = rootVisualElement;
 
