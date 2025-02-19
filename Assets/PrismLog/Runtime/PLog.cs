@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace PrismLog
 {
-    public struct PLog
+    internal struct PLog
     {
         private static readonly string[] STACKTRACE_EXLUDE_CLASSNAME = new string[]
         {

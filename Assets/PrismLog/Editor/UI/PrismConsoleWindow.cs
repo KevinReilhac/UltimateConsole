@@ -14,7 +14,7 @@ using System.Text;
 
 namespace PrismLog.Editor.Window
 {
-    public class PrismConsoleWindow : EditorWindow, IPLogHandler
+    internal class PrismConsoleWindow : EditorWindow, IPLogHandler
     {
         [SerializeField] private VisualTreeAsset VisualTreeAsset = default;
         [SerializeField] private VisualTreeAsset debugLineTemplate;

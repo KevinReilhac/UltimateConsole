@@ -7,7 +7,7 @@ using PrismLog.Editor.Settings;
 
 namespace PrismLog.Editor.Window
 {
-    public class LogLine : VisualElement
+    internal class LogLine : VisualElement
     {
         public static event Action<LogLine> OnLogLineSelected = null;
         public static event Action<LogLine> OnLogLineDoubleClicked = null;
