@@ -44,7 +44,7 @@ namespace PrismLog.Editor.Window
             set => EditorPrefs.SetBool(KEY_COLLAPSE_ENABLED, value);
         }
         
-        public static int Chanels
+        public static int Channels
         {
             get => EditorPrefs.GetInt(CHANELS, -1);
             set => EditorPrefs.SetInt(CHANELS, value);

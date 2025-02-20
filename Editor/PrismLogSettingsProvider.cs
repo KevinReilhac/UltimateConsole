@@ -28,7 +28,7 @@ namespace PrismLog.Editor.Settings
             SerializedObject settings = PrismLogSettings.GetSerializedSettings();
             settings.Update();
 
-            //Chanels
+            //Channels
             DrawTitle("Channels");
             GUI.enabled = ChanelListDrawer(settings.FindProperty(nameof(PrismLogSettings.channelSettings)), settings.FindProperty(nameof(PrismLogSettings.defaultIcon)));
             EditorGUILayout.Space();
@@ -49,10 +49,10 @@ namespace PrismLog.Editor.Settings
             settings.ApplyModifiedProperties();
         }
 
-        private static bool ChanelListDrawer(SerializedProperty chanels, SerializedProperty defaultChanelIcon)
+        private static bool ChanelListDrawer(SerializedProperty channels, SerializedProperty defaultChanelIcon)
         {
             //Variable Initialisation
-            string[] chanelNames = new string[chanels.arraySize];
+            string[] chanelNames = new string[channels.arraySize];
             SerializedProperty item = null;
             SerializedProperty nameProperty = null;
             SerializedProperty iconProperty = null;
@@ -68,9 +68,9 @@ namespace PrismLog.Editor.Settings
             EditorGUILayout.EndHorizontal();
 
             //Lines
-            for (int i = 0; i < chanels.arraySize; i++)
+            for (int i = 0; i < channels.arraySize; i++)
             {
-                item = chanels.GetArrayElementAtIndex(i);
+                item = channels.GetArrayElementAtIndex(i);
                 nameProperty = item.FindPropertyRelative("name");
                 iconProperty = item.FindPropertyRelative("icon");
 
@@ -96,12 +96,12 @@ namespace PrismLog.Editor.Settings
             //Button
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUI.enabled = chanels.arraySize > 1;
+            GUI.enabled = channels.arraySize > 1;
             if (GUILayout.Button(EditorGUIUtility.IconContent("d_Toolbar Minus"), EditorStyles.miniButtonLeft, GUILayout.Width(50f)))
-                chanels.arraySize--;
-            GUI.enabled = chanels.arraySize < PrismLogChannelsGenerator.MAX_CHANEL_COUNT;
+                channels.arraySize--;
+            GUI.enabled = channels.arraySize < PrismLogChannelsGenerator.MAX_CHANEL_COUNT;
             if (GUILayout.Button(EditorGUIUtility.IconContent("d_Toolbar Plus"), EditorStyles.miniButtonRight, GUILayout.Width(50f)))
-                chanels.arraySize++;
+                channels.arraySize++;
             GUI.enabled = true;
             EditorGUILayout.EndHorizontal();
             return valid;

@@ -69,6 +69,6 @@
     flex-direction: row;
 }
 
-#ChanelsDropdown {
+#ChannelsDropdown {
     min-width: 200px;
 }
