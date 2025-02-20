@@ -57,10 +57,10 @@ namespace PrismLog.Editor.Window
                 defaultValue = LogType.Log,
             };
 
-            UxmlEnumAttributeDescription<PrismLogChanel> ChanelAttr = new UxmlEnumAttributeDescription<PrismLogChanel>()
+            UxmlEnumAttributeDescription<PrismLogChannel> ChanelAttr = new UxmlEnumAttributeDescription<PrismLogChannel>()
             {
                 name = "chanel",
-                defaultValue = PrismLogChanel.Default,
+                defaultValue = PrismLogChannel.Default,
             };
 
             UxmlBoolAttributeDescription IsSelectedAttr = new UxmlBoolAttributeDescription()
@@ -133,17 +133,17 @@ namespace PrismLog.Editor.Window
             }
         }
 
-        private PrismLogChanel _chanel = PrismLogChanel.Default;
-        public PrismLogChanel Chanel
+        private PrismLogChannel _chanel = PrismLogChannel.Default;
+        public PrismLogChannel Chanel
         {
             get => _chanel;
             set => SetChanel(value);
         }
 
-        private void SetChanel(PrismLogChanel chanel)
+        private void SetChanel(PrismLogChannel chanel)
         {
             _chanel = chanel;
-            icon.style.backgroundImage = _settings.GetChanelIcon(chanel);
+            icon.style.backgroundImage = _settings.GetChannelIcon(chanel);
         }
 
         public bool IsSelected
@@ -171,7 +171,7 @@ namespace PrismLog.Editor.Window
             {
                 Message = log.Value.message;
                 LogType = log.Value.logType;
-                Chanel = log.Value.chanel;
+                Chanel = log.Value.channel;
             }
             _log = log;
         }

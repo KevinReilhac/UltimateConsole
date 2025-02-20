@@ -1,11 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using log4net.Util;
 using UnityEngine;
+
 
 namespace PrismLog
 {
+    /// <summary>
+    /// A static class that contains methods for logging messages to the ◭ console.
+    /// </summary>
     public static class PConsole
     {
         public const string DEFAULT_CONSOLE_LOG_START = "◭";
@@ -29,10 +29,17 @@ namespace PrismLog
 
         internal static PLogList GetLogList() => logList;
 
-        public static void Log(string message, PrismLogChanel chanel = PrismLogChanel.Default, LogType logType = LogType.Log, object context = null)
+        /// <summary>
+        /// Log a message with a channel and a log type.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        /// <param name="channel">The channel to log the message to.</param>
+        /// <param name="logType">The type of log to log.</param>
+        /// <param name="context">The context of the log.</param>
+        public static void Log(string message, PrismLogChannel chanel = PrismLogChannel.Default, LogType logType = LogType.Log, object context = null)
         {
             PLog newLogLine = new PLog(message, chanel, logType, context);
-            string chanelName = chanel != PrismLogChanel.Default ? chanel.ToString() : "Default";
+            string chanelName = chanel != PrismLogChannel.Default ? chanel.ToString() : "Default";
 
             string defaultConsoleLogLine = string.Format(DEFAULT_CONSOLE_LOG_FORMAT, chanelName, newLogLine.message);
 
@@ -52,31 +59,62 @@ namespace PrismLog
             logList.AddLine(newLogLine);
         }
 
-        public static void LogFormat(string format, PrismLogChanel chanel = PrismLogChanel.Default, LogType logType = LogType.Log, object context = null, params object[] args)
+        /// <summary>
+        /// Log a formatted message with a channel and a log type.
+        /// </summary>
+        /// <param name="format">The format of the message to log.</param>
+        /// <param name="channel">The channel to log the message to.</param>
+        /// <param name="logType">The type of log to log.</param>
+        /// <param name="context">The context of the log.</param>
+        public static void LogFormat(string format, PrismLogChannel channel = PrismLogChannel.Default, LogType logType = LogType.Log, object context = null, params object[] args)
         {
             string message = string.Format(format, args);
 
-            Log(message, chanel, logType, context);
+            Log(message, channel, logType, context);
         }
 
-        public static void LogWarning(string message, PrismLogChanel chanel = PrismLogChanel.Default, object context = null)
+        /// <summary>
+        /// Log a warning message with a channel.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        /// <param name="channel">The channel to log the message to.</param>
+        /// <param name="context">The context of the log.</param>
+        public static void LogWarning(string message, PrismLogChannel channel = PrismLogChannel.Default, object context = null)
         {
-            Log(message, chanel, LogType.Warning, context);
+            Log(message, channel, LogType.Warning, context);
         }
 
-        public static void LogWarningFormat(string format, PrismLogChanel chanel = PrismLogChanel.Default, object context = null, params object[] args)
+        /// <summary>
+        /// Log a formatted warning message with a channel.
+        /// </summary>
+        /// <param name="format">The format of the message to log.</param>
+        /// <param name="channel">The channel to log the message to.</param>
+        /// <param name="context">The context of the log.</param>
+        public static void LogWarningFormat(string format, PrismLogChannel channel = PrismLogChannel.Default, object context = null, params object[] args)
         {
-            LogFormat(format, chanel, LogType.Warning, context, args);
+            LogFormat(format, channel, LogType.Warning, context, args);
         }
 
-        public static void LogError(string message, PrismLogChanel chanel = PrismLogChanel.Default, object context = null)
+        /// <summary>
+        /// Log an error message with a channel.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        /// <param name="channel">The channel to log the message to.</param>
+        /// <param name="context">The context of the log.</param>
+        public static void LogError(string message, PrismLogChannel channel = PrismLogChannel.Default, object context = null)
         {
-            Log(message, chanel, LogType.Error, context);
+            Log(message, channel, LogType.Error, context);
         }
 
-        public static void LogErrorFormat(string format, PrismLogChanel chanel = PrismLogChanel.Default, object context = null, params object[] args)
+        /// <summary>
+        /// Log a formatted error message with a channel.
+        /// </summary>
+        /// <param name="format">The format of the message to log.</param>
+        /// <param name="channel">The channel to log the message to.</param>
+        /// <param name="context">The context of the log.</param>
+        public static void LogErrorFormat(string format, PrismLogChannel channel = PrismLogChannel.Default, object context = null, params object[] args)
         {
-            LogFormat(format, chanel, LogType.Error, context, args);
+            LogFormat(format, channel, LogType.Error, context, args);
         }
     }
 }

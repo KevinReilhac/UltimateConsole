@@ -3,12 +3,12 @@ using UnityEngine;
 namespace PrismLog
 {
     [System.Serializable]
-    public class LogChanelSettingChanel
+    public class LogChannelSettingChanel
     {
         [SerializeField] private string name;
         [SerializeField] private Texture2D icon;
 
-        public LogChanelSettingChanel(string name, Texture2D icon = null)
+        public LogChannelSettingChanel(string name, Texture2D icon = null)
         {
             this.name = name;
             this.icon = icon;

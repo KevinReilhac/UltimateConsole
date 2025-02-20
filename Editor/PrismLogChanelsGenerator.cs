@@ -11,13 +11,13 @@ using PrismLog.Editor.Settings;
 
 namespace PrismLog.Editor
 {
-    internal static class PrismLogChanelsGenerator
+    internal static class PrismLogChannelsGenerator
     {
         //Max chanel count is 63, because of the long type
         public const int MAX_CHANEL_COUNT = 63;
 
-        public const string ENUM_NAME = "PrismLogChanel";
-        public const string DEFINE = "PRISM_LOG_CHANEL_GENERATED";
+        public const string ENUM_NAME = "PrismLogChannel";
+        public const string DEFINE = "PRISM_LOG_CHANNEL_GENERATED";
 
         public static readonly string PATH = $"Plugins/PrismLog/Runtime/Generated/{ENUM_NAME}.cs";
         private static readonly string ASMDEF_PATH = $"Plugins/PrismLog/Runtime/Generated/PrismLog.Generated.asmdef";
@@ -91,7 +91,7 @@ namespace PrismLog.Editor
         private static string GetChanelStrings()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            LogChanelSettingChanel[] chanelsSettings = PrismLogSettings.GetOrCreateSettings().chanelSettings;
+            LogChannelSettingChanel[] chanelsSettings = PrismLogSettings.GetOrCreateSettings().channelSettings;
 
             stringBuilder.AppendLine(GetChanelString("Default", 1));
             for (int i = 0; i < Mathf.Min(chanelsSettings.Length, MAX_CHANEL_COUNT); i++)

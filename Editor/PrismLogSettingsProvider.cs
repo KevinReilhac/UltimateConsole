@@ -17,7 +17,7 @@ namespace PrismLog.Editor.Settings
             SettingsProvider provider = new SettingsProvider("Project/Prism Log", SettingsScope.Project)
             {
                 guiHandler = Drawer,
-                keywords = new HashSet<string>(new[] { "Prism", "Log", "Chanel" })
+                keywords = new HashSet<string>(new[] { "Prism", "Log", "Channel" })
             };
 
             return provider;
@@ -29,13 +29,13 @@ namespace PrismLog.Editor.Settings
             settings.Update();
 
             //Chanels
-            DrawTitle("Chanels");
-            GUI.enabled = ChanelListDrawer(settings.FindProperty(nameof(PrismLogSettings.chanelSettings)), settings.FindProperty(nameof(PrismLogSettings.defaultIcon)));
+            DrawTitle("Channels");
+            GUI.enabled = ChanelListDrawer(settings.FindProperty(nameof(PrismLogSettings.channelSettings)), settings.FindProperty(nameof(PrismLogSettings.defaultIcon)));
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Generate Chanels Enum", GUILayout.Width(200f), GUILayout.Height(50f)))
-                PrismLogChanelsGenerator.Generate();
+            if (GUILayout.Button("Generate Channels Enum", GUILayout.Width(200f), GUILayout.Height(50f)))
+                PrismLogChannelsGenerator.Generate();
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
             GUI.enabled = true;
@@ -99,7 +99,7 @@ namespace PrismLog.Editor.Settings
             GUI.enabled = chanels.arraySize > 1;
             if (GUILayout.Button(EditorGUIUtility.IconContent("d_Toolbar Minus"), EditorStyles.miniButtonLeft, GUILayout.Width(50f)))
                 chanels.arraySize--;
-            GUI.enabled = chanels.arraySize < PrismLogChanelsGenerator.MAX_CHANEL_COUNT;
+            GUI.enabled = chanels.arraySize < PrismLogChannelsGenerator.MAX_CHANEL_COUNT;
             if (GUILayout.Button(EditorGUIUtility.IconContent("d_Toolbar Plus"), EditorStyles.miniButtonRight, GUILayout.Width(50f)))
                 chanels.arraySize++;
             GUI.enabled = true;
