@@ -32,7 +32,7 @@ namespace PrismLog.Samples
             string message = messageInputField.text;
 
             int chanelIndex = chanelDropdown.value;
-            PrismLogChanel chanelValue = (PrismLogChanel)(1 << chanelIndex);
+            PrismLogChannel chanelValue = (PrismLogChannel)(1 << chanelIndex);
 
             PConsole.Log(message, chanelValue, logTypeValue);
         }
@@ -41,7 +41,7 @@ namespace PrismLog.Samples
         {
             chanelDropdown.ClearOptions();
             List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-            foreach (var chanel in Enum.GetNames(typeof(PrismLogChanel)))
+            foreach (var chanel in Enum.GetNames(typeof(PrismLogChannel)))
                 options.Add(new TMP_Dropdown.OptionData(chanel));
             chanelDropdown.AddOptions(options);
 
@@ -58,8 +58,8 @@ namespace PrismLog.Samples
 
         private string[] GetChanelNames()
         {
-            return Enum.GetValues(typeof(PrismLogChanel))
-                .Cast<PrismLogChanel>()
+            return Enum.GetValues(typeof(PrismLogChannel))
+                .Cast<PrismLogChannel>()
                 .Select(chanel => chanel.ToString())
                 .ToArray();
         }

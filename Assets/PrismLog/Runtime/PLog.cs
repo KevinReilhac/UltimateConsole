@@ -16,16 +16,16 @@ namespace PrismLog
         };
 
         public string message;
-        public PrismLogChanel chanel;
+        public PrismLogChannel channel;
         public LogType logType;
         public object context;
         public List<StackFrame> stacktrace;
 
 
-        public PLog(string message, PrismLogChanel chanel, LogType logType, object context)
+        public PLog(string message, PrismLogChannel channel, LogType logType, object context)
         {
             this.message = message;
-            this.chanel = chanel;
+            this.channel = channel;
             this.logType = logType;
             this.context = context;
             this.stacktrace = null;
@@ -54,7 +54,7 @@ namespace PrismLog
 
         public override int GetHashCode()
         {
-            int hashCode = HashCode.Combine(message, chanel, logType);
+            int hashCode = HashCode.Combine(message, channel, logType);
 
             return hashCode;
         }

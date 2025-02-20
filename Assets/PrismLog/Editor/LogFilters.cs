@@ -32,15 +32,15 @@ namespace PrismLog
 
         public event Action OnLogFilterChanged;
 
-        private PrismLogChanel _chanels = PrismLogChanel.Default;
-        public PrismLogChanel Chanels
+        private PrismLogChannel _channels = PrismLogChannel.Default;
+        public PrismLogChannel Channels
         {
-            get => _chanels;
+            get => _channels;
             set
             {
-                if (_chanels == value)
+                if (_channels == value)
                     return;
-                _chanels = value;
+                _channels = value;
                 OnLogFilterChanged?.Invoke();
             }
         }
@@ -82,7 +82,7 @@ namespace PrismLog
                 result.isDisplayable = false;
 
             // Check if the log chanel is in the list of chanels filter
-            if (!CheckChanel(log))
+            if (!CheckChannel(log))
                 result.isDisplayable = false;
 
             return result;
@@ -97,9 +97,9 @@ namespace PrismLog
         {
             LogFiltersResult result = new LogFiltersResult(true);
 
-            if (Settings.ExceptionDisplayMode.HasFlag(PrismLogSettings.EExceptionDisplayMode.CheckChanel))
+            if (Settings.ExceptionDisplayMode.HasFlag(PrismLogSettings.EExceptionDisplayMode.CheckChannel))
             {
-                if (!CheckChanel(log))
+                if (!CheckChannel(log))
                 {
                     result.isDisplayable = false;
                     return result;
@@ -118,9 +118,9 @@ namespace PrismLog
             return result;
         }
 
-        private bool CheckChanel(PLog log)
+        private bool CheckChannel(PLog log)
         {
-            return Chanels.HasFlag(log.chanel);
+            return Channels.HasFlag(log.channel);
         }
 
         private bool CheckSearchText(string message, out int startIndex, out int endIndex)

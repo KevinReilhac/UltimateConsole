@@ -5,7 +5,7 @@ using System;
 namespace PrismLog
 {
     [Flags]
-    public enum PrismLogChanel : long
+    public enum PrismLogChannel : long
     {
         Default = 1,
         UI = 2,

@@ -8,7 +8,7 @@ namespace PrismLog.Editor.Settings
 {
     public class PrismLogSettings : ScriptableObject
     {
-        private static readonly string[] DEFAULT_CHANELS = new string[] {
+        private static readonly string[] DEFAULT_CHANNELS = new string[] {
             "UI",
             "AI",
             "Network",
@@ -19,35 +19,35 @@ namespace PrismLog.Editor.Settings
         [Flags]
         public enum EExceptionDisplayMode
         {
-            CheckChanel = 1,
+            CheckChannel = 1,
             CheckLogType = 2,
         }
 
-        [SerializeField] internal LogChanelSettingChanel[] chanelSettings;
+        [SerializeField] internal LogChannelSettingChanel[] channelSettings;
         [SerializeField] internal Texture2D defaultIcon;
-        [SerializeField] private EExceptionDisplayMode exceptionDisplayMode = EExceptionDisplayMode.CheckChanel | EExceptionDisplayMode.CheckLogType;
+        [SerializeField] private EExceptionDisplayMode exceptionDisplayMode = EExceptionDisplayMode.CheckChannel | EExceptionDisplayMode.CheckLogType;
 
-        private Dictionary<PrismLogChanel, LogChanelSettingChanel> chanelSettingsDict = null;
+        private Dictionary<PrismLogChannel, LogChannelSettingChanel> channelSettingsDict = null;
 
         private void FillChanelSettingsDict()
         {
-            chanelSettingsDict = new Dictionary<PrismLogChanel, LogChanelSettingChanel>();
+            channelSettingsDict = new Dictionary<PrismLogChannel, LogChannelSettingChanel>();
 
-            for (int i = 0; i < chanelSettings.Length; i++)
-                chanelSettingsDict.Add(Enum.Parse<PrismLogChanel>(DEFAULT_CHANELS[i]), chanelSettings[i]);
+            for (int i = 0; i < channelSettings.Length; i++)
+                channelSettingsDict.Add(Enum.Parse<PrismLogChannel>(DEFAULT_CHANNELS[i]), channelSettings[i]);
         }
 
         #region GETTER
         public const string SETTINGS_PATH = "Assets/Plugins/PrismLog/Editor/PrismLogSettings.asset";
         private static string AbsoluteSettingsPath => Path.Join(Application.dataPath.Replace("/Assets", ""), Path.GetDirectoryName(SETTINGS_PATH));
 
-        internal Texture2D GetChanelIcon(PrismLogChanel chanel)
+        internal Texture2D GetChannelIcon(PrismLogChannel channel)
         {
-            if (chanel == PrismLogChanel.Default)
+            if (channel == PrismLogChannel.Default)
                 return defaultIcon;
 
-            if (chanelSettingsDict == null) FillChanelSettingsDict();
-            if (chanelSettingsDict.TryGetValue(chanel, out LogChanelSettingChanel value))
+            if (channelSettingsDict == null) FillChanelSettingsDict();
+            if (channelSettingsDict.TryGetValue(channel, out LogChannelSettingChanel value))
                 return value.Icon;
             return defaultIcon;
         }
@@ -58,12 +58,12 @@ namespace PrismLog.Editor.Settings
             if (settings == null)
             {
                 settings = CreateInstance<PrismLogSettings>();
-                settings.chanelSettings = new LogChanelSettingChanel[DEFAULT_CHANELS.Length];
+                settings.channelSettings = new LogChannelSettingChanel[DEFAULT_CHANNELS.Length];
 
                 //Settings default value
-                for (int i = 0; i < DEFAULT_CHANELS.Length; i++)
+                for (int i = 0; i < DEFAULT_CHANNELS.Length; i++)
                 {
-                    settings.chanelSettings[i] = new LogChanelSettingChanel(DEFAULT_CHANELS[i], GetChanelIcon(DEFAULT_CHANELS[i]));
+                    settings.channelSettings[i] = new LogChannelSettingChanel(DEFAULT_CHANNELS[i], GetChannelIcon(DEFAULT_CHANNELS[i]));
                 }
 
                 settings.defaultIcon = EditorGUIUtility.IconContent("console.infoicon.sml").image as Texture2D;
@@ -77,9 +77,9 @@ namespace PrismLog.Editor.Settings
             return settings;
         }
 
-        private static Texture2D GetChanelIcon(string chanelName)
+        private static Texture2D GetChannelIcon(string channelName)
         {
-            string iconName = string.Format("{0}-chanel-icon", chanelName.ToLower());
+            string iconName = string.Format("{0}-channel-icon", channelName.ToLower());
 
             string[] assets = AssetDatabase.FindAssets($"{iconName} t:texture2D");
             if (assets.Length > 0)

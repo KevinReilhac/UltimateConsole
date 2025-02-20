@@ -199,10 +199,10 @@ namespace PrismLog.Editor.Window
             logLinesContainer.Clear();
 
             EnumFlagsField chanelsDropDown = root.Q<EnumFlagsField>("ChanelsDropdown");
-            chanelsDropDown.Init(PrismLogChanel.Default, true);
-            chanelsDropDown.value = (PrismLogChanel)(-1);
+            chanelsDropDown.Init(PrismLogChannel.Default, true);
+            chanelsDropDown.value = (PrismLogChannel)(-1);
             chanelsDropDown.RegisterValueChangedCallback(OnChanelsChange);
-            chanelsDropDown.value = (PrismLogChanel)PrismConsoleWindowPrefs.Chanels;
+            chanelsDropDown.value = (PrismLogChannel)PrismConsoleWindowPrefs.Chanels;
             detailsText = root.Q<Label>("DetailsText");
             detailsText.text = string.Empty;
 
@@ -251,8 +251,8 @@ namespace PrismLog.Editor.Window
 
         private void OnChanelsChange(ChangeEvent<Enum> evt)
         {
-            PrismLogChanel chanel = (PrismLogChanel)evt.newValue;
-            logFilters.Chanels = chanel;
+            PrismLogChannel chanel = (PrismLogChannel)evt.newValue;
+            logFilters.Channels = chanel;
             PrismConsoleWindowPrefs.Chanels = (int)chanel;
         }
 
@@ -371,7 +371,7 @@ namespace PrismLog.Editor.Window
             if (logString.StartsWith(PConsole.DEFAULT_CONSOLE_LOG_START))
                 return;
 
-            PLog log = new PLog(logString, PrismLogChanel.Default, type, null);
+            PLog log = new PLog(logString, PrismLogChannel.Default, type, null);
 
             OnNewLog(log);
         }
