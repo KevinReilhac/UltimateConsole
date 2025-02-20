@@ -91,11 +91,11 @@ namespace PrismLog.Editor
         private static string GetChanelStrings()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            LogChannelSettingChanel[] chanelsSettings = PrismLogSettings.GetOrCreateSettings().channelSettings;
+            LogChannelSettingChanel[] channelsSettings = PrismLogSettings.GetOrCreateSettings().channelSettings;
 
             stringBuilder.AppendLine(GetChanelString("Default", 1));
-            for (int i = 0; i < Mathf.Min(chanelsSettings.Length, MAX_CHANEL_COUNT); i++)
-                stringBuilder.AppendLine(GetChanelString(chanelsSettings[i].Name, 1 << (i + 1)));
+            for (int i = 0; i < Mathf.Min(channelsSettings.Length, MAX_CHANEL_COUNT); i++)
+                stringBuilder.AppendLine(GetChanelString(channelsSettings[i].Name, 1 << (i + 1)));
 
 
             return stringBuilder.ToString();

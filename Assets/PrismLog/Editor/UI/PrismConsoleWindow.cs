@@ -198,11 +198,11 @@ namespace PrismLog.Editor.Window
             logLinesContainer = root.Q<ScrollView>("LogLineContainer").contentContainer;
             logLinesContainer.Clear();
 
-            EnumFlagsField chanelsDropDown = root.Q<EnumFlagsField>("ChanelsDropdown");
-            chanelsDropDown.Init(PrismLogChannel.Default, true);
-            chanelsDropDown.value = (PrismLogChannel)(-1);
-            chanelsDropDown.RegisterValueChangedCallback(OnChanelsChange);
-            chanelsDropDown.value = (PrismLogChannel)PrismConsoleWindowPrefs.Chanels;
+            EnumFlagsField channelsDropDown = root.Q<EnumFlagsField>("ChannelsDropdown");
+            channelsDropDown.Init(PrismLogChannel.Default, true);
+            channelsDropDown.value = (PrismLogChannel)(-1);
+            channelsDropDown.RegisterValueChangedCallback(OnChannelsChange);
+            channelsDropDown.value = (PrismLogChannel)PrismConsoleWindowPrefs.Channels;
             detailsText = root.Q<Label>("DetailsText");
             detailsText.text = string.Empty;
 
@@ -249,11 +249,11 @@ namespace PrismLog.Editor.Window
 
         #region UI_CALLBACKS
 
-        private void OnChanelsChange(ChangeEvent<Enum> evt)
+        private void OnChannelsChange(ChangeEvent<Enum> evt)
         {
             PrismLogChannel chanel = (PrismLogChannel)evt.newValue;
             logFilters.Channels = chanel;
-            PrismConsoleWindowPrefs.Chanels = (int)chanel;
+            PrismConsoleWindowPrefs.Channels = (int)chanel;
         }
 
         private void OnSearchFieldChange(ChangeEvent<string> evt)
